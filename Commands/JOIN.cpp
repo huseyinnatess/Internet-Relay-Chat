@@ -1,0 +1,229 @@
+#include "../Server/Server.hpp"
+#include "../Channel/Channel.hpp"
+#include <sstream> //-> for std::istringstream
+
+bool CheckChannelName(string channelName)
+{
+    if (channelName.empty() || channelName.size() == 1)
+    {
+        return true;
+    }
+
+    if (channelName[0] != '#' && channelName[0] != '&')
+    {
+        return true;
+    }
+
+    for (size_t i = 0; i < channelName.length(); i++)
+    {
+        if (channelName[i] == 7)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+void SplitChannelKeys(string channelKeys, std::vector<string>& keys)
+{
+    if (channelKeys.empty() || channelKeys.size() == 1 || channelKeys[0] == '#'
+        || channelKeys[0] == '&')
+    {
+        return;
+    }
+    std::istringstream tokenStream(channelKeys);
+    string token;
+
+    while (std::getline(tokenStream, token, ','))
+    {
+        if (!token.empty())
+        {
+            int pos = token.find_first_of(' ');
+            string channelName = token.substr(0, pos);
+            keys.push_back(channelName);
+        }
+    }
+}
+
+void Server::ClientJoin(int fd, std::vector<string>& channelNames)
+{
+    if (channelNames.size() < 1)
+    {
+        SendError(fd, ERR_NEEDMOREPARAMS(channelNames[0]));
+        return;
+    }
+    channelNames.erase(channelNames.begin()); // Removed JOIN command
+    
+    std::vector<string> keys;
+    if (channelNames[1] != "")
+    {
+        SplitChannelKeys(channelNames[1], keys);
+    }
+    std::vector<string> channels = SplitChannelNames(channelNames);
+
+    string key = "";
+
+    for (size_t i = 0; i < channels.size(); i++)
+    {
+        string& channelName = channels[i];
+        if ((channelName[0] != '#' && channelName[0] != '&') || channelName.size() == 1)
+        {
+            SendError(fd, ERR_INVCHANNAME);
+            continue;
+        }
+        if (keys.size() > 0)
+        {
+            key = keys[i];
+        }
+       if (CheckClientRegistered(fd, channelName))
+            continue;
+
+       if (CheckChannelIsCreated(channelName))
+       {
+            int index = GetCreatedChannel(channelName);
+
+            // Check if channel is full
+            if (CreatedChannels[index].GetUserCount() == CreatedChannels[index].GetUserLimit())
+            {
+                SendError(fd, ERR_CHANNELISFULL(channelName));
+                printf("Channel is full\n");
+                continue;
+            }
+            
+            // Check if channel is password protected
+            if (CreatedChannels[index].GetIsPasswordProtected())
+            {
+                if (CreatedChannels[index].GetKey() == key)
+                {
+                    JoinChannel(fd, channelName, index);
+                }
+                else
+                {
+                    SendError(fd, ERR_BADCHANNELKEY(channelName));
+                    printf("Channel key is not valid\n");
+                    continue;
+                }
+            }
+
+            // If channel is not password protected
+            else if (!CreatedChannels[index].GetIsPasswordProtected())
+            {
+                JoinChannel(fd, channelName, index);
+            }
+       }
+       else
+       {
+            CreateAndJoinChannel(fd, channelName, key);
+       }
+    }
+}
+
+int Server::CheckClientRegistered(int fd, string channelName)
+{
+    Client &client = GetClient(fd);
+    int index = GetCreatedChannel(channelName);
+    if (index == -1)
+    {
+        return 0;
+    }
+    Channel &channel = CreatedChannels[index];
+
+    for (size_t i = 0; i < channel.RegisteredUsersFd.size(); i++)
+    {
+        if (channel.RegisteredUsersFd[i] == fd)
+        {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int Server::CheckChannelIsCreated(string channelName)
+{
+    for (size_t i = 0; i < CreatedChannels.size(); i++)
+    {
+        if (CreatedChannels[i].GetChannelName() == channelName)
+        {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int Server::GetCreatedChannel(string channelName)
+{
+    for (size_t i = 0; i < CreatedChannels.size(); i++)
+    {
+        if (CreatedChannels[i].GetChannelName() == channelName)
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+
+void Server::JoinChannel(int fd, string channelName, int index)
+{
+    Client &client = GetClient(fd);
+    Channel &channel = CreatedChannels[index];
+    client.RegisteredChannels.push_back(channel);
+    channel.SetUserCount(channel.GetUserCount() + 1);
+    channel.RegisteredUsersFd.push_back(fd);
+    print("Client joined channel: " + channelName);
+
+    if (channel.GetTopic() != "")
+    {
+        SendMessage(client.GetFd(), RPL_TOPIC(client.GetNickname(), client.GetIpAddress(), channelName, channel.GetTopic()));
+    }
+    else
+    {
+        SendMessage(client.GetFd(), RPL_NOTOPIC(client.GetNickname(), channelName));
+    }
+    
+    SendMessage(client.GetFd(), RPL_JOIN(client.GetNickname(), client.GetIpAddress(), channelName));
+    ShowChannelInformations(fd, channelName);
+}
+
+void Server::CreateAndJoinChannel(int fd, string channelName, string key)
+{
+    Client &client = GetClient(fd);
+    Channel newChannel(channelName, key);
+    client.RegisteredChannels.push_back(newChannel);
+    newChannel.RegisteredUsersFd.push_back(fd);
+    newChannel.SetUserCount(1);
+    newChannel.SetOperator(client.GetNickname());
+    CreatedChannels.push_back(newChannel);
+
+    if (key != "")
+    {
+        newChannel.SetIsPasswordProtected(true);
+        print("Client: " + client.GetNickname() + " and joined channel: " + channelName + " with key: " + key);
+    }
+    else
+    {
+        print("Client: "  + client.GetNickname() + " and joined channel: " + channelName);
+    }
+    SendMessage(fd, RPL_JOIN(GetClient(fd).GetNickname(), GetClient(fd).GetIpAddress(), channelName));
+    ShowChannelInformations(fd, channelName);
+}
+
+void Server::ShowChannelInformations(int fd, string channelName)
+{
+    int index = GetCreatedChannel(channelName);
+    string messages = "";
+    Channel &channel = CreatedChannels[index];
+    std::vector<int> fds;
+
+    for (size_t i = 0; i < channel.RegisteredUsersFd.size(); i++)
+    {
+        Client &client = GetClient(channel.RegisteredUsersFd[i]);
+        if (client.GetNickname() == channel.GetOperator())
+            messages += "@";
+        fds.push_back(client.GetFd());
+        messages += client.GetNickname() + " ";
+    }
+    Client &requestingClient = GetClient(fd);
+    SendAllClientsMessage(fds, RPL_NAMREPLY(requestingClient.GetNickname(), channelName, messages));
+    SendAllClientsMessage(fds, RPL_ENDOFNAMES(requestingClient.GetNickname(), channelName));
+}
+
