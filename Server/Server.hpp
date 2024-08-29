@@ -97,10 +97,13 @@ private:
 
     /* ----------------- Channel Functions ----------------- */
     int CheckChannelIsCreated(string channelName);
-    int GetCreatedChannel(string channelName);
+    int GetCreatedChannelIndex(string channelName);
     void JoinChannel(int fd, string channelName, int index);
     void CreateAndJoinChannel(int fd, string channelName, string key);
     std::vector<string> SplitChannelNames(std::vector<string> channelNames);
+    void RemoveChannel(int channelIndex);
+    void RemoveChannelFromClient(int fd, string channelName);
+    void RemoveChannelRegisteredUser(int fd, string channelName);
 
 };
 

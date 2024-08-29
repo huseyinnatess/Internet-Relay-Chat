@@ -80,10 +80,11 @@ void Server::ClientJoin(int fd, std::vector<string>& channelNames)
 
        if (CheckChannelIsCreated(channelName))
        {
-            int index = GetCreatedChannel(channelName);
+            int index = GetCreatedChannelIndex(channelName);
+            Channel &channel = CreatedChannels[index];
 
             // Check if channel is full
-            if (CreatedChannels[index].GetUserCount() == CreatedChannels[index].GetUserLimit())
+            if (channel.GetUserCount() == channel.GetUserLimit())
             {
                 SendError(fd, ERR_CHANNELISFULL(channelName));
                 printf("Channel is full\n");
@@ -91,9 +92,9 @@ void Server::ClientJoin(int fd, std::vector<string>& channelNames)
             }
             
             // Check if channel is password protected
-            if (CreatedChannels[index].GetIsPasswordProtected())
+            if (channel.GetIsPasswordProtected())
             {
-                if (CreatedChannels[index].GetKey() == key)
+                if (channel.GetKey() == key)
                 {
                     JoinChannel(fd, channelName, index);
                 }
@@ -106,7 +107,7 @@ void Server::ClientJoin(int fd, std::vector<string>& channelNames)
             }
 
             // If channel is not password protected
-            else if (!CreatedChannels[index].GetIsPasswordProtected())
+            else if (!channel.GetIsPasswordProtected())
             {
                 JoinChannel(fd, channelName, index);
             }
@@ -121,16 +122,16 @@ void Server::ClientJoin(int fd, std::vector<string>& channelNames)
 int Server::CheckClientRegistered(int fd, string channelName)
 {
     Client &client = GetClient(fd);
-    int index = GetCreatedChannel(channelName);
+    int index = GetCreatedChannelIndex(channelName);
     if (index == -1)
     {
         return 0;
     }
     Channel &channel = CreatedChannels[index];
 
-    for (size_t i = 0; i < channel.RegisteredUsersFd.size(); i++)
+    for (size_t i = 0; i < client.RegisteredChannels.size(); i++)
     {
-        if (channel.RegisteredUsersFd[i] == fd)
+        if (client.RegisteredChannels[i].GetChannelName() == channelName)
         {
             return 1;
         }
@@ -148,18 +149,6 @@ int Server::CheckChannelIsCreated(string channelName)
         }
     }
     return 0;
-}
-
-int Server::GetCreatedChannel(string channelName)
-{
-    for (size_t i = 0; i < CreatedChannels.size(); i++)
-    {
-        if (CreatedChannels[i].GetChannelName() == channelName)
-        {
-            return i;
-        }
-    }
-    return -1;
 }
 
 void Server::JoinChannel(int fd, string channelName, int index)
@@ -209,7 +198,7 @@ void Server::CreateAndJoinChannel(int fd, string channelName, string key)
 
 void Server::ShowChannelInformations(int fd, string channelName)
 {
-    int index = GetCreatedChannel(channelName);
+    int index = GetCreatedChannelIndex(channelName);
     string messages = "";
     Channel &channel = CreatedChannels[index];
     std::vector<int> fds;

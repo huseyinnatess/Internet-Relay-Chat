@@ -25,37 +25,23 @@ void Server::ClientPart(int fd, std::vector<string> &channelNames)
         }
         if (CheckChannelIsCreated(channelName))
         {
-            int index = GetCreatedChannel(channelName);
+            int index = GetCreatedChannelIndex(channelName);
             Client &client = GetClient(fd);
             Channel &channel = CreatedChannels[index];
-            print(channel.GetUserCount());
             if (channel.GetUserCount() == 1)
             {
                 client.RegisteredChannels.erase(client.RegisteredChannels.begin() + i);
                 channel.SetOperator("");
-                CreatedChannels.erase(CreatedChannels.begin() + index);
+                RemoveChannel(index);
                 SendMessage(fd, RPL_PART(client.GetNickname(), channelName));
             }
             else
             {
-                for (size_t i = 0; i < channel.RegisteredUsersFd.size(); i++)
-                {
-                    channel.SetUserCount(channel.GetUserCount() - 1);
-                    if (channel.RegisteredUsersFd[i] == fd)
-                    {
-                        channel.RegisteredUsersFd.erase(channel.RegisteredUsersFd.begin() + i);
-                    }
-                    for (size_t i = 0; i < client.RegisteredChannels.size(); i++)
-                    {
-                        client.RegisteredChannels.erase(client.RegisteredChannels.begin() + i);
-                    }
-                    if (channel.GetOperator() == client.GetNickname())
-                        channel.SetOperator("");
-                    ShowChannelInformations(fd, channelName);
-                    SendMessage(fd, RPL_PART(client.GetNickname(), channelName));
-                    print("Burada");
-                    break;
-                }
+                RemoveChannelFromClient(fd, channelName);
+                if (channel.GetOperator() == client.GetNickname())
+                    channel.SetOperator("");
+                ShowChannelInformations(fd, channelName);
+                SendMessage(fd, RPL_PART(client.GetNickname(), channelName));
             }
         }
         else

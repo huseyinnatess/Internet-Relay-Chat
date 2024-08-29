@@ -15,6 +15,7 @@ SRC =	SERVER/Server.cpp \
 		SERVER/ReceiveNewData.cpp \
 		SERVER/GetFunctions.cpp \
 		SERVER/ParseClientCommand.cpp \
+		SERVER/Remove.cpp \
 		CLIENT/Client.cpp \
 		CLIENT/GetFunctions.cpp \
 		CLIENT/SetFunctions.cpp \

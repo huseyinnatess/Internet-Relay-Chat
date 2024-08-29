@@ -9,3 +9,15 @@ Client& Server::GetClient(int fd)
 	}
 	throw std::runtime_error("Client not found");
 }
+
+int Server::GetCreatedChannelIndex(string channelName)
+{
+    for (size_t i = 0; i < CreatedChannels.size(); i++)
+    {
+        if (CreatedChannels[i].GetChannelName() == channelName)
+        {
+            return i;
+        }
+    }
+    return -1;
+}
