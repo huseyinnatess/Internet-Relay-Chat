@@ -34,6 +34,9 @@
 #define ERR_BADCHANNELKEY(channelName)                  ": 475 " + channelName + " :Cannot join channel (+k)\r\n"
 #define ERR_INVCHANNAME                                 ": 479 :Invalid channel name\r\n"
 
+/* -------------------- TOPIC ERROR MESSAGES -------------------- */
+#define ERR_CHANOPRIVSNEEDED(channelName)               ": 482 " + channelName + " :You're not channel operator\r\n"
+
 #include "../Print/Print.hpp"
 #include <string>
 #include <unistd.h> //-> for close()

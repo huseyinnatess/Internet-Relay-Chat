@@ -34,6 +34,12 @@ void Server::RouterCommands(int fd, int commandIndex, std::vector<string> comman
         case PART:
             ClientPart(fd, command);
             break;
+        case TOPIC:
+            ClientTopic(fd, command);
+            break;
+        case MODE:
+            ClientMode(fd, command);
+            break;
     }
 }
 

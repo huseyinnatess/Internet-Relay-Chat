@@ -53,7 +53,6 @@ void Server::ClientJoin(int fd, std::vector<string>& channelNames)
         return;
     }
     channelNames.erase(channelNames.begin()); // Removed JOIN command
-    
     std::vector<string> keys;
     if (channelNames[1] != "")
     {
@@ -61,17 +60,16 @@ void Server::ClientJoin(int fd, std::vector<string>& channelNames)
     }
     std::vector<string> channels = SplitChannelNames(channelNames);
 
-    string key = "";
-
     for (size_t i = 0; i < channels.size(); i++)
     {
-        string& channelName = channels[i];
+        string channelName = channels[i];
+        string key = "";
         if ((channelName[0] != '#' && channelName[0] != '&') || channelName.size() == 1)
         {
             SendError(fd, ERR_INVCHANNAME);
             continue;
         }
-        if (keys.size() > 0)
+        if (keys.size() > i)
         {
             key = keys[i];
         }
@@ -129,9 +127,9 @@ int Server::CheckClientRegistered(int fd, string channelName)
     }
     Channel &channel = CreatedChannels[index];
 
-    for (size_t i = 0; i < client.RegisteredChannels.size(); i++)
+    for (size_t i = 0; i < channel.RegisteredUsersFd.size(); i++)
     {
-        if (client.RegisteredChannels[i].GetChannelName() == channelName)
+        if (channel.RegisteredUsersFd[i] == fd)
         {
             return 1;
         }
@@ -181,9 +179,8 @@ void Server::CreateAndJoinChannel(int fd, string channelName, string key)
     newChannel.RegisteredUsersFd.push_back(fd);
     newChannel.SetUserCount(1);
     newChannel.SetOperator(client.GetNickname());
-    CreatedChannels.push_back(newChannel);
 
-    if (key != "")
+    if (key != "" && key != "JOIN")
     {
         newChannel.SetIsPasswordProtected(true);
         print("Client: " + client.GetNickname() + " and joined channel: " + channelName + " with key: " + key);
@@ -192,6 +189,7 @@ void Server::CreateAndJoinChannel(int fd, string channelName, string key)
     {
         print("Client: "  + client.GetNickname() + " and joined channel: " + channelName);
     }
+    CreatedChannels.push_back(newChannel);
     SendMessage(fd, RPL_JOIN(GetClient(fd).GetNickname(), GetClient(fd).GetIpAddress(), channelName));
     ShowChannelInformations(fd, channelName);
 }
@@ -202,7 +200,6 @@ void Server::ShowChannelInformations(int fd, string channelName)
     string messages = "";
     Channel &channel = CreatedChannels[index];
     std::vector<int> fds;
-
     for (size_t i = 0; i < channel.RegisteredUsersFd.size(); i++)
     {
         Client &client = GetClient(channel.RegisteredUsersFd[i]);

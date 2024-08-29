@@ -9,7 +9,7 @@ void Server::ClientPart(int fd, std::vector<string> &channelNames)
     }
     channelNames.erase(channelNames.begin()); // Removed PART command
     std::vector<string> channels = SplitChannelNames(channelNames);
-    
+
     for (size_t i = 0; i < channels.size(); i++)
     {
         string channelName = channels[i];
@@ -30,7 +30,7 @@ void Server::ClientPart(int fd, std::vector<string> &channelNames)
             Channel &channel = CreatedChannels[index];
             if (channel.GetUserCount() == 1)
             {
-                client.RegisteredChannels.erase(client.RegisteredChannels.begin() + i);
+                RemoveChannelFromClient(fd, channelName);
                 channel.SetOperator("");
                 RemoveChannel(index);
                 SendMessage(fd, RPL_PART(client.GetNickname(), channelName));

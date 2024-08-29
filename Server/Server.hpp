@@ -82,6 +82,8 @@ private:
     void ClientQuit(int fd); // QUIT
     void ClientJoin(int fd, std::vector<string>& channelNames); // JOIN
     void ClientPart(int fd, std::vector<string>& channelNames); // PART
+    void ClientTopic(int fd, std::vector<string> channelNames); // TOPIC
+    void ClientMode(int fd, std::vector<string> channelNames); // MODE
 
     /* ----------------- Check Functions ----------------- */
     bool CheckIsUsing(string value, string checkValue);
@@ -104,6 +106,7 @@ private:
     void RemoveChannel(int channelIndex);
     void RemoveChannelFromClient(int fd, string channelName);
     void RemoveChannelRegisteredUser(int fd, string channelName);
+    void ModeOperator(int fd, Channel &channel, string clientName);
 
 };
 

@@ -26,6 +26,8 @@ SRC =	SERVER/Server.cpp \
 		COMMANDS/QUIT.cpp \
 		COMMANDS/JOIN.cpp \
 		COMMANDS/PART.cpp \
+		COMMANDS/TOPIC.cpp \
+		COMMANDS/MODE.cpp \
 		CHANNEL/Channel.cpp \
 		CHANNEL/GetFunctions.cpp \
 		CHANNEL/SetFunctions.cpp \

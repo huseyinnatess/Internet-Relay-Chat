@@ -1,7 +1,7 @@
 #include "Server.hpp"
 #include <sstream> //-> for std::istringstream
 
-void Split_Buffer(string buffer, std::vector<string>& commandList);
+void SplitBuffer(string buffer, std::vector<string>& commandList);
 
 void Server::ReceiveNewData(int fd)
 {
@@ -19,7 +19,7 @@ void Server::ReceiveNewData(int fd)
     if (client.GetBuffer().find_first_of("\r\n") == string::npos) //if command is not
          return;
 
-    Split_Buffer(message, commandList);
+    SplitBuffer(message, commandList);
 
     for (size_t i = 0; i < commandList.size(); i++)
     {
@@ -31,7 +31,7 @@ void Server::ReceiveNewData(int fd)
     }
 }
 
-void Split_Buffer(string buffer, std::vector<string>& commandList)
+void SplitBuffer(string buffer, std::vector<string>& commandList)
 {
     std::istringstream stm(buffer); // reading string first space character
     string token;
