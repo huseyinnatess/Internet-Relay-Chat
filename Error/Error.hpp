@@ -37,6 +37,8 @@
 /* -------------------- TOPIC ERROR MESSAGES -------------------- */
 #define ERR_CHANOPRIVSNEEDED(channelName)               ": 482 " + channelName + " :You're not channel operator\r\n"
 
+/* -------------------- MODE ERROR MESSAGES -------------------- */
+
 #include "../Print/Print.hpp"
 #include <string>
 #include <unistd.h> //-> for close()

@@ -11,6 +11,28 @@ void Server::ModeOperator(int fd, Channel &channel, string clientName)
             return;
         }
     }
+    SendError(fd, "User not found\r\n");
+}
+
+void ModePassword(int fd, Channel &channel, string password)
+{
+    if (password == "")
+    {
+        return;
+    }
+    channel.SetKey(password);
+    channel.SetIsPasswordProtected(true);
+}
+
+void ModeChannelLimit(int fd, Channel &channel, string limit)
+{
+    int userLimit = ConvertToInt(limit);
+
+    if (userLimit <= 0 || userLimit > 50 || channel.GetUserCount() > userLimit)
+    {
+        return;
+    }
+    channel.SetUserLimit(userLimit);
 }
 
 void Server::ClientMode(int fd, std::vector<string> channelNames)
@@ -34,14 +56,23 @@ void Server::ClientMode(int fd, std::vector<string> channelNames)
     Channel &channel = CreatedChannels[index];
     Client &client = GetClient(fd);
 
+    if (channel.GetOperator() != client.GetNickname())
+    {
+        SendError(fd, ERR_CHANOPRIVSNEEDED(channel.GetChannelName()));
+        return;
+    }
+        
     if (channelNames[1] == "+o")
     {
-        if (channel.GetOperator() != client.GetNickname())
-        {
-            SendError(fd, ERR_CHANOPRIVSNEEDED(channel.GetChannelName()));
-            return;
-        }
         ModeOperator(fd, channel, channelNames[2]);
         ShowChannelInformations(fd, channel.GetChannelName());
+    }
+    if (channelNames[1] == "+k")
+    {
+        ModePassword(fd, channel, channelNames[2]);
+    }
+    if (channelNames[1] == "+l")
+    {
+        ModeChannelLimit(fd, channel, channelNames[2]);
     }
 }
