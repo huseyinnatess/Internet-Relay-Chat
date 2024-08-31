@@ -23,7 +23,7 @@ void SplitChannelKeys(string channelKeys, vector<string>& keys)
     }
 }
 
-void Server::ClientJoin(int fd, vector<string>& channelNames)
+void Server::ClientJoin(int fd, vector<string> channelNames)
 {
     if (channelNames.size() < 1)
     {

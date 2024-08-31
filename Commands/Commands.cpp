@@ -19,7 +19,6 @@ bool Server::CheckIsUsing(string value, string checkValue)
     {
         for (size_t i = 0; i < Clients.size(); i++)
         {
-            print(Clients[i].GetUsername(), GREEN);
             if (Clients[i].GetUsername() == value)
             {
                 return true;

@@ -15,7 +15,6 @@ void Server::SendMessage(int fd, string message)
 {
     if (send(fd, message.c_str(), message.size(), 0) == -1)
         std::cerr << "Error: send() failed" << std::endl;
-    print("\n");
 }
 
 void Server::SendAllClientsMessage(vector<int> fds, string message)

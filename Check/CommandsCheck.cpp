@@ -103,3 +103,34 @@ int Server::CheckChannelIsCreated(string channelName)
     return 0;
 }
 /* ----------------------------------------------------------- */
+
+/* ----------------- CLIENT CHECK FUNCTIONS ----------------- */
+int Server::CheckClient(string nickName)
+{
+    for (size_t i = 0; i < Clients.size(); i++)
+    {
+        if (Clients[i].GetNickname() == nickName)
+        {
+            return 1;
+        }
+    }
+    return 0;
+}
+/* ----------------------------------------------------------- */
+
+/* ----------------- COMMAND CHECK FUNCTIONS ----------------- */
+void CheckDoubleCommands(vector<string> &commandList)
+{
+    for(size_t i = 0; i < commandList.size(); i++)
+    {
+        if (i + 1 < commandList.size())
+        {
+            if (commandList[i] == commandList[i + 1])
+            {
+                commandList.erase(commandList.begin() + i);
+                i--;
+            }
+        }
+    }
+}
+/* ----------------------------------------------------------- */

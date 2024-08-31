@@ -45,6 +45,10 @@
 #define RPL_INVITE(nick, ip, channel, target)           ":" + nick + "!" + nick + "@" + ip + " INVITE " + target + " " + channel + "\r\n"
 #define ERR_INVITEONLYCHAN(channelName)                 ": 473 " + channelName + " :Cannot join channel (+i)\r\n"
 
+/* -------------------- KICK ERROR MESSAGES -------------------- */
+#define ERR_CHANOPKICK(target)                          ": 482 " + target + " :You cannot KICK yourself" + "\r\n"
+#define RPL_KICK(nick, target, channel)                 ":" + nick + " KICK " + channel + " " + target + "\r\n"
+
 
 #include "../Server/Server.hpp"
 

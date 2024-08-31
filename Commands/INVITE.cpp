@@ -1,23 +1,29 @@
 #include "../Server/Server.hpp"
 
-void Server::ClientInvite(int fd, vector<string> channelNames)
+void Server::ClientInvite(int fd, vector<string> commands)
 {
-    if (channelNames.size() < 2)
+    if (commands.size() < 2)
     {
-        SendMessage(fd, ERR_NEEDMOREPARAMS(channelNames[0]));
+        SendMessage(fd, ERR_NEEDMOREPARAMS(commands[0]));
         return;
     }
-    channelNames.erase(channelNames.begin());
+    commands.erase(commands.begin());
 
-    int index = GetCreatedChannelIndex(channelNames[0]);
+    int index = GetCreatedChannelIndex(commands[0]);
     if (index == -1)
     {
-        SendMessage(fd, ERR_NOSUCHCHANNEL(channelNames[0]));
+        SendMessage(fd, ERR_NOSUCHCHANNEL(commands[0]));
+        return;
+    }
+    if (CheckClient(commands[1]) == 0)
+    {
+        SendMessage(fd, ERR_NOSUCHNICK(commands[1]));
         return;
     }
 
     Channel &channel = CreatedChannels[index];
     Client &client = GetClient(fd);
+    Client &targetClient = GetClient(commands[1]);
 
     if (channel.GetOperator() != client.GetNickname())
     {
@@ -25,15 +31,6 @@ void Server::ClientInvite(int fd, vector<string> channelNames)
         return;
     }
 
-    for (size_t i = 0; i < Clients.size(); i++)
-    {
-        if (Clients[i].GetNickname() == channelNames[1])
-        {
-            Clients[i].SetInvitedChannel(channelNames[0]);
-            SendMessage(Clients[i].GetFd(), RPL_INVITE(client.GetNickname(), client.GetIpAddress(), channel.GetChannelName(), channelNames[1]));
-            return;
-        }
-    }
-    
-    SendMessage(fd, ERR_NOSUCHNICK(channelNames[1]));
+    targetClient.SetInvitedChannel(commands[0]);
+    SendMessage(targetClient.GetFd(), RPL_INVITE(client.GetNickname(), client.GetIpAddress(), channel.GetChannelName(), commands[1]));
 }

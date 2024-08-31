@@ -35,21 +35,20 @@ void ModeChannelLimit(int fd, Channel &channel, string limit)
     channel.SetUserLimit(userLimit);
 }
 
-void Server::ClientMode(int fd, vector<string> channelNames)
+void Server::ClientMode(int fd, vector<string> commands)
 {
-    if (channelNames.size() == 1)
+    if (commands.size() == 1)
         return;
-    if (channelNames.size() < 1 || channelNames.size() > 4)
+    if (commands.size() < 1 || commands.size() > 4)
     {
-        SendError(fd, ERR_NEEDMOREPARAMS(channelNames[0]));
+        SendError(fd, ERR_NEEDMOREPARAMS(commands[0]));
         return;
     }
-    channelNames.erase(channelNames.begin());
-    vector<string> channels = SplitChannelNames(channelNames);
-    int index = GetCreatedChannelIndex(channels[0]);
+    commands.erase(commands.begin());
+    int index = GetCreatedChannelIndex(commands[0]);
     if (index == -1)
     {
-        SendError(fd, ERR_NOSUCHCHANNEL(channels[0]));
+        SendError(fd, ERR_NOSUCHCHANNEL(commands[0]));
         return;
     }
 
@@ -62,36 +61,36 @@ void Server::ClientMode(int fd, vector<string> channelNames)
         return;
     }
 
-    if (channelNames[1] == "+o")
+    if (commands[1] == "+o")
     {
-        ModeOperator(fd, channel, channelNames[2]);
+        ModeOperator(fd, channel, commands[2]);
         ShowChannelInformations(fd, channel.GetChannelName());
         return;
     }
-    if (channelNames[1] == "+k")
+    if (commands[1] == "+k")
     {
-        ModePassword(fd, channel, channelNames[2]);
+        ModePassword(fd, channel, commands[2]);
         return;
     }
-    if (channelNames[1] == "-k")
+    if (commands[1] == "-k")
     {
         channel.SetKey("");
         channel.SetIsPasswordProtected(false);
         SendMessage(fd, "Channel key is removed: " + channel.GetChannelName());
         return;
     }
-    if (channelNames[1] == "+l")
+    if (commands[1] == "+l")
     {
-        ModeChannelLimit(fd, channel, channelNames[2]);
+        ModeChannelLimit(fd, channel, commands[2]);
         return;
     }
-    if (channelNames[1] == "+i")
+    if (commands[1] == "+i")
     {
         channel.SetInviteOnly(true);
         SendMessage(fd, "Invite only channel: " + channel.GetChannelName());
         return;
     }
-    if (channelNames[1] == "-i")
+    if (commands[1] == "-i")
     {
         channel.SetInviteOnly(false);
         SendMessage(fd, "Channel is not invite only: " + channel.GetChannelName());

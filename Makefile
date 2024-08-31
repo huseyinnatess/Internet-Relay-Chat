@@ -30,6 +30,7 @@ SRC =	SERVER/Server.cpp \
 		COMMANDS/TOPIC.cpp \
 		COMMANDS/MODE.cpp \
 		COMMANDS/INVITE.cpp \
+		COMMANDS/KICK.cpp \
 		CHANNEL/Channel.cpp \
 		CHANNEL/GetFunctions.cpp \
 		CHANNEL/SetFunctions.cpp \

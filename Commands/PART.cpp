@@ -1,6 +1,6 @@
 #include "../Server/Server.hpp"
 
-void Server::ClientPart(int fd, vector<string> &channelNames)
+void Server::ClientPart(int fd, vector<string> channelNames)
 {    
     if (channelNames.size() < 2)
     {
@@ -41,7 +41,7 @@ void Server::ClientPart(int fd, vector<string> &channelNames)
                 if (channel.GetOperator() == client.GetNickname())
                     channel.SetOperator("");
                 ShowChannelInformations(fd, channelName);
-                SendMessage(fd, RPL_PART(client.GetNickname(), channelName));
+                SendAllClientsMessage(channel.RegisteredUsersFd, RPL_PART(client.GetNickname(), channelName));
             }
         }
         else

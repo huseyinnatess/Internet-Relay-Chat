@@ -51,6 +51,7 @@ public:
     vector<Client> Clients;
 
     Client& GetClient(int fd);
+    Client& GetClient(string nickName);
 
 private:
     int _port;
@@ -80,22 +81,24 @@ private:
     void ClientNick(int fd, vector<string> command); // NICK
     void ClientUsername(int fd, vector<string> command); // USER
     void ClientQuit(int fd); // QUIT
-    void ClientJoin(int fd, vector<string>& channelNames); // JOIN
-    void ClientPart(int fd, vector<string>& channelNames); // PART
-    void ClientTopic(int fd, vector<string> channelNames); // TOPIC
-    void ClientMode(int fd, vector<string> channelNames); // MODE
-    void ClientInvite(int fd, vector<string> channelNames); // INVITE
+    void ClientJoin(int fd, vector<string> channelNames); // JOIN
+    void ClientPart(int fd, vector<string> commands); // PART
+    void ClientTopic(int fd, vector<string> commands); // TOPIC
+    void ClientMode(int fd, vector<string> commands); // MODE
+    void ClientInvite(int fd, vector<string> commands); // INVITE
+    void ClientKick(int fd, vector<string> commands); // KICK
 
     /* ----------------- Check Functions ----------------- */
     bool CheckIsUsing(string value, string checkValue);
     int  CheckClientRegistered(int fd, string channelName);
-    void ShowChannelInformations(int fd, string channelName);
+    int  CheckClient(string nickName);
     
     /* ----------------- Error Functions ----------------- */
     void SendError(int fd, string errorMesssage, int clientCloseFlag = 0);
 
     /* ----------------- Message Functions ----------------- */
     void SendMessage(int fd, string message);
+    void ShowChannelInformations(int fd, string channelName);
     void SendAllClientsMessage(vector<int> fds, string message);
 
     /* ----------------- Channel Functions ----------------- */
