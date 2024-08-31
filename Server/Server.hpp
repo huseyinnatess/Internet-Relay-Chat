@@ -4,7 +4,7 @@
 #include "../Client/Client.hpp"
 #include "../Print/Print.hpp"
 #include "../Message/Message.hpp"
-#include <vector>
+#include "../Check/Check.hpp"
 #include <sys/socket.h> //-> for socket()
 #include <sys/types.h> //-> for socket()
 #include <netinet/in.h> //-> for sockaddr_in
@@ -48,7 +48,7 @@ public:
 
     void CloseFds(); // Close all file descriptors
     void ClearClients(int fd); // Clear all clients
-    std::vector<Client> Clients;
+    vector<Client> Clients;
 
     Client& GetClient(int fd);
 
@@ -58,10 +58,10 @@ private:
     
     static bool _signal;
 
-    std::vector<struct pollfd> _pollFds; // Multiple file descriptors can be monitored at once
+    vector<struct pollfd> _pollFds; // Multiple file descriptors can be monitored at once
     string _password;
     std::map<string, Commands> _commandsMap;
-    std::vector<Channel> CreatedChannels;
+    vector<Channel> CreatedChannels;
 
 
     /* ----------------- Initialize Functions ----------------- */
@@ -70,20 +70,21 @@ private:
     void ServerLoop();
 
     /* ----------------- Parser, Router Functions ----------------- */
-    void RouterLoginCommands(int fd, int commandIndex, std::vector<string> command);
-    void RouterCommands(int fd, int commandIndex, std::vector<string> command);
+    void RouterLoginCommands(int fd, int commandIndex, vector<string> command);
+    void RouterCommands(int fd, int commandIndex, vector<string> command);
     void ParseClientCommands(int fd, string command);
     int FindCommandInMap(string command);
 
     /* ----------------- Command Functions ----------------- */
-    void ClientAutherization(int fd, std::vector<string> command); // PASS
-    void ClientNick(int fd, std::vector<string> command); // NICK
-    void ClientUsername(int fd, std::vector<string> command); // USER
+    void ClientAutherization(int fd, vector<string> command); // PASS
+    void ClientNick(int fd, vector<string> command); // NICK
+    void ClientUsername(int fd, vector<string> command); // USER
     void ClientQuit(int fd); // QUIT
-    void ClientJoin(int fd, std::vector<string>& channelNames); // JOIN
-    void ClientPart(int fd, std::vector<string>& channelNames); // PART
-    void ClientTopic(int fd, std::vector<string> channelNames); // TOPIC
-    void ClientMode(int fd, std::vector<string> channelNames); // MODE
+    void ClientJoin(int fd, vector<string>& channelNames); // JOIN
+    void ClientPart(int fd, vector<string>& channelNames); // PART
+    void ClientTopic(int fd, vector<string> channelNames); // TOPIC
+    void ClientMode(int fd, vector<string> channelNames); // MODE
+    void ClientInvite(int fd, vector<string> channelNames); // INVITE
 
     /* ----------------- Check Functions ----------------- */
     bool CheckIsUsing(string value, string checkValue);
@@ -95,14 +96,14 @@ private:
 
     /* ----------------- Message Functions ----------------- */
     void SendMessage(int fd, string message);
-    void SendAllClientsMessage(std::vector<int> fds, string message);
+    void SendAllClientsMessage(vector<int> fds, string message);
 
     /* ----------------- Channel Functions ----------------- */
     int CheckChannelIsCreated(string channelName);
     int GetCreatedChannelIndex(string channelName);
     void JoinChannel(int fd, string channelName, int index);
     void CreateAndJoinChannel(int fd, string channelName, string key);
-    std::vector<string> SplitChannelNames(std::vector<string> channelNames);
+    vector<string> SplitChannelNames(vector<string> channelNames);
     void RemoveChannel(int channelIndex);
     void RemoveChannelFromClient(int fd, string channelName);
     void RemoveChannelRegisteredUser(int fd, string channelName);

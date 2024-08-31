@@ -1,6 +1,6 @@
 #include "../Server/Server.hpp"
 
-void Server::ClientAutherization(int fd, std::vector<string> command)
+void Server::ClientAutherization(int fd, vector<string> command)
 {
     Client &client = GetClient(fd);
     string password = command[1];

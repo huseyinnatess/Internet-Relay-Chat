@@ -2,7 +2,7 @@
 #include "../Channel/Channel.hpp"
 #include <sstream> //-> for std::istringstream
 
-void SplitChannelKeys(string channelKeys, std::vector<string>& keys)
+void SplitChannelKeys(string channelKeys, vector<string>& keys)
 {
     if (channelKeys.empty() || channelKeys.size() == 1 || channelKeys[0] == '#'
         || channelKeys[0] == '&')
@@ -23,7 +23,7 @@ void SplitChannelKeys(string channelKeys, std::vector<string>& keys)
     }
 }
 
-void Server::ClientJoin(int fd, std::vector<string>& channelNames)
+void Server::ClientJoin(int fd, vector<string>& channelNames)
 {
     if (channelNames.size() < 1)
     {
@@ -31,12 +31,12 @@ void Server::ClientJoin(int fd, std::vector<string>& channelNames)
         return;
     }
     channelNames.erase(channelNames.begin()); // Removed JOIN command
-    std::vector<string> keys;
+    vector<string> keys;
     if (channelNames[1] != "")
     {
         SplitChannelKeys(channelNames[1], keys);
     }
-    std::vector<string> channels = SplitChannelNames(channelNames);
+    vector<string> channels = SplitChannelNames(channelNames);
 
     for (size_t i = 0; i < channels.size(); i++)
     {
@@ -63,7 +63,11 @@ void Server::ClientJoin(int fd, std::vector<string>& channelNames)
             if (channel.GetUserCount() == channel.GetUserLimit())
             {
                 SendError(fd, ERR_CHANNELISFULL(channelName));
-                printf("Channel is full\n");
+                continue;
+            }
+            if (channel.GetInviteOnly() && GetClient(fd).GetInvitedChannel() != channelName)
+            {
+                SendError(fd, ERR_INVITEONLYCHAN(channelName));
                 continue;
             }
             

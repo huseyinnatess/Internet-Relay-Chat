@@ -29,6 +29,7 @@ SRC =	SERVER/Server.cpp \
 		COMMANDS/PART.cpp \
 		COMMANDS/TOPIC.cpp \
 		COMMANDS/MODE.cpp \
+		COMMANDS/INVITE.cpp \
 		CHANNEL/Channel.cpp \
 		CHANNEL/GetFunctions.cpp \
 		CHANNEL/SetFunctions.cpp \
@@ -42,7 +43,7 @@ OBJDIR = Output
 OBJ = $(SRC:%.cpp=$(OBJDIR)/%.o)
 
 CPP = c++
-FLAGS = -std=c++98 -g
+FLAGS = -std=c++98
 
 $(OBJDIR)/%.o : %.cpp
 	@mkdir -p $(dir $@)

@@ -1,6 +1,6 @@
 #include "../Server/Server.hpp"
 
-void Server::ClientPart(int fd, std::vector<string> &channelNames)
+void Server::ClientPart(int fd, vector<string> &channelNames)
 {    
     if (channelNames.size() < 2)
     {
@@ -8,7 +8,7 @@ void Server::ClientPart(int fd, std::vector<string> &channelNames)
         return;
     }
     channelNames.erase(channelNames.begin()); // Removed PART command
-    std::vector<string> channels = SplitChannelNames(channelNames);
+    vector<string> channels = SplitChannelNames(channelNames);
 
     for (size_t i = 0; i < channels.size(); i++)
     {

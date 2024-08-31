@@ -47,7 +47,6 @@ Client::Client(Client const &client)
     _buffer = client._buffer;
     _ipAddress = client._ipAddress;
     _clientColor = client._clientColor;
-    _channelsInvite = client._channelsInvite;
 }
 
 Client &Client::operator=(Client const &client)
@@ -65,7 +64,6 @@ Client &Client::operator=(Client const &client)
     _buffer = client._buffer;
     _ipAddress = client._ipAddress;
     _clientColor = client._clientColor;
-    _channelsInvite = client._channelsInvite;
     return *this;
 }
 

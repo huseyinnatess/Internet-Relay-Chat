@@ -15,9 +15,10 @@ void Server::SendMessage(int fd, string message)
 {
     if (send(fd, message.c_str(), message.size(), 0) == -1)
         std::cerr << "Error: send() failed" << std::endl;
+    print("\n");
 }
 
-void Server::SendAllClientsMessage(std::vector<int> fds, string message)
+void Server::SendAllClientsMessage(vector<int> fds, string message)
 {
     for (size_t i = 0; i < fds.size(); i++)
     {
@@ -31,7 +32,7 @@ void Server::ShowChannelInformations(int fd, string channelName)
     int index = GetCreatedChannelIndex(channelName);
     string messages = "";
     Channel &channel = CreatedChannels[index];
-    std::vector<int> fds;
+    vector<int> fds;
     for (size_t i = 0; i < channel.RegisteredUsersFd.size(); i++)
     {
         Client &client = GetClient(channel.RegisteredUsersFd[i]);

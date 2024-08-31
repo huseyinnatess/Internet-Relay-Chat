@@ -1,14 +1,14 @@
 #include "Server.hpp"
 #include <sstream> //-> for std::istringstream
 
-void SplitBuffer(string buffer, std::vector<string>& commandList);
+void SplitBuffer(string buffer, vector<string>& commandList);
 
 void Server::ReceiveNewData(int fd)
 {
     char buffer[1024];
     string message;
     Client &client = GetClient(fd);
-    std::vector<string> commandList;
+    vector<string> commandList;
 
     memset(buffer, 0, sizeof(buffer));
     while (recv(fd, buffer, sizeof(buffer), 0) > 0)
@@ -31,7 +31,7 @@ void Server::ReceiveNewData(int fd)
     }
 }
 
-void SplitBuffer(string buffer, std::vector<string>& commandList)
+void SplitBuffer(string buffer, vector<string>& commandList)
 {
     std::istringstream stm(buffer); // reading string first space character
     string token;

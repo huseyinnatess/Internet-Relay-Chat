@@ -29,6 +29,7 @@
 #define RPL_NOTOPIC(nick, channel)                      ": 331 " + nick + " " + channel + " :No topic is set" + "\r\n"
 #define RPL_NAMREPLY(nick, channel, users)			    ": 353 " + nick + " = " + channel + " :" + users + "\r\n"
 #define RPL_ENDOFNAMES(nick, channel)                   ": 366 " + nick + " " + channel + " :End of /NAMES list\r\n"
+#define ERR_NOSUCHNICK(nick)                            ": 401 " + nick + " :No such nick\r\n"
 
 /* -------------------- CHANNEL ERROR MESSAGES -------------------- */
 #define ERR_BADCHANNELKEY(channelName)                  ": 475 " + channelName + " :Cannot join channel (+k)\r\n"
@@ -40,9 +41,11 @@
 /* -------------------- MODE ERROR MESSAGES -------------------- */
 #define ERR_UNKNOWNMODE(channelName)                    ": 472 " + channelName + " :is unknown mode char to me\r\n"
 
-#include "../Print/Print.hpp"
-#include <string>
-#include <unistd.h> //-> for close()
+/* -------------------- INVITE ERROR MESSAGES -------------------- */
+#define RPL_INVITE(nick, ip, channel, target)           ":" + nick + "!" + nick + "@" + ip + " INVITE " + target + " " + channel + "\r\n"
+#define ERR_INVITEONLYCHAN(channelName)                 ": 473 " + channelName + " :Cannot join channel (+i)\r\n"
+
+
 #include "../Server/Server.hpp"
 
 

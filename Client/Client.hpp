@@ -1,8 +1,6 @@
 #ifndef CLIENT_HPP
 #define CLIENT_HPP
 
-#include <string>
-#include <vector>
 #include "../Channel/Channel.hpp"
 
 class Client
@@ -18,8 +16,8 @@ public:
     /* ----------------- Getter Functions ----------------- */
     int GetFd();
     bool GetRegistered();
-    bool GetInvitedChannel(string &channelName);
     bool GetLoggedIn();
+    string GetInvitedChannel();
     string GetUsername();
     string GetNickname();
     string GetIpAddress();
@@ -31,6 +29,7 @@ public:
     /* ----------------- Setter Functions ----------------- */
     void SetFd(int fd);
     void SetRegistered(bool isRegistered);
+    void SetInvitedChannel(string channelName);
     void SetLoggedIn(bool isLoggedIn);
     void SetUsername(string username);
     void SetNickname(string nickname);
@@ -42,8 +41,6 @@ public:
     
     /* ----------------- Other Functions ----------------- */
     void ClearBuffer();
-    void AddChannelInvite(string &channelName);
-    void RemoveChannelInvite(string &channelName);
     /* ----------------------------------------------------- */
 
 private:
@@ -61,7 +58,7 @@ private:
     string _clientColor;
     string _buffer;
     string _hostName;
-    std::vector<string> _channelsInvite;
+    string _invitedChannel;
 };
 
 #endif

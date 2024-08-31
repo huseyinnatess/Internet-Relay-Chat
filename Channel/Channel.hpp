@@ -5,6 +5,7 @@
 #define string std::string
 
 #include <vector>
+#include <iostream>
 
 class Channel
 {

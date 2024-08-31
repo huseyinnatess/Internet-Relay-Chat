@@ -35,7 +35,7 @@ void ModeChannelLimit(int fd, Channel &channel, string limit)
     channel.SetUserLimit(userLimit);
 }
 
-void Server::ClientMode(int fd, std::vector<string> channelNames)
+void Server::ClientMode(int fd, vector<string> channelNames)
 {
     if (channelNames.size() == 1)
         return;
@@ -45,7 +45,7 @@ void Server::ClientMode(int fd, std::vector<string> channelNames)
         return;
     }
     channelNames.erase(channelNames.begin());
-    std::vector<string> channels = SplitChannelNames(channelNames);
+    vector<string> channels = SplitChannelNames(channelNames);
     int index = GetCreatedChannelIndex(channels[0]);
     if (index == -1)
     {
@@ -73,9 +73,28 @@ void Server::ClientMode(int fd, std::vector<string> channelNames)
         ModePassword(fd, channel, channelNames[2]);
         return;
     }
+    if (channelNames[1] == "-k")
+    {
+        channel.SetKey("");
+        channel.SetIsPasswordProtected(false);
+        SendMessage(fd, "Channel key is removed: " + channel.GetChannelName());
+        return;
+    }
     if (channelNames[1] == "+l")
     {
         ModeChannelLimit(fd, channel, channelNames[2]);
+        return;
+    }
+    if (channelNames[1] == "+i")
+    {
+        channel.SetInviteOnly(true);
+        SendMessage(fd, "Invite only channel: " + channel.GetChannelName());
+        return;
+    }
+    if (channelNames[1] == "-i")
+    {
+        channel.SetInviteOnly(false);
+        SendMessage(fd, "Channel is not invite only: " + channel.GetChannelName());
         return;
     }
     SendError(fd, ERR_UNKNOWNMODE(channel.GetChannelName()));

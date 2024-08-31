@@ -1,6 +1,6 @@
 #include "../Server/Server.hpp"
 
-void Server::ClientNick(int fd, std::vector<string> command)
+void Server::ClientNick(int fd, vector<string> command)
 {
     Client &client = GetClient(fd);
 

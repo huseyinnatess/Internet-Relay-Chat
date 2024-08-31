@@ -1,5 +1,4 @@
 #include "Server/Server.hpp"
-#include "Check.hpp"
 
 int main(int argc, char *argv[])
 {

@@ -1,6 +1,6 @@
 #include "../Server/Server.hpp"
 
-string ParseTopic(std::vector<string> channelNames)
+string ParseTopic(vector<string> channelNames)
 {
     string topic = "";
     if (channelNames[1][0] == ':')
@@ -13,7 +13,7 @@ string ParseTopic(std::vector<string> channelNames)
     return topic;
 }
 
-void Server::ClientTopic(int fd, std::vector<string> channelNames)
+void Server::ClientTopic(int fd, vector<string> channelNames)
 {
     if (channelNames.size() < 2)
     {
@@ -21,7 +21,7 @@ void Server::ClientTopic(int fd, std::vector<string> channelNames)
         return;
     }
     channelNames.erase(channelNames.begin()); // Removed TOPIC command
-    std::vector<string> channels = SplitChannelNames(channelNames);
+    vector<string> channels = SplitChannelNames(channelNames);
 
     int index = GetCreatedChannelIndex(channels[0]);
     if (index == -1)

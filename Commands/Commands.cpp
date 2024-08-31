@@ -29,9 +29,9 @@ bool Server::CheckIsUsing(string value, string checkValue)
     return false;
 }
 
-std::vector<string> Server::SplitChannelNames(std::vector<string> channelNames)
+vector<string> Server::SplitChannelNames(vector<string> channelNames)
 {
-    std::vector<string> channels;
+    vector<string> channels;
 
     std::istringstream tokenStream(channelNames[0]);
     string token;

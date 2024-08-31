@@ -1,6 +1,6 @@
 #include "../Server/Server.hpp"
 
-string MergeCommand(std::vector<string> command)
+string MergeCommand(vector<string> command)
 {
     string mergedCommand;
     for (size_t i = 1; i < command.size(); i++)
@@ -12,7 +12,7 @@ string MergeCommand(std::vector<string> command)
     return mergedCommand;
 }
 
-void Server::ClientUsername(int fd, std::vector<string> command)
+void Server::ClientUsername(int fd, vector<string> command)
 {
     Client& client = GetClient(fd);
     

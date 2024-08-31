@@ -40,7 +40,13 @@ string Client::GetHostName()
     return _hostName;
 }
 
+string Client::GetInvitedChannel()
+{
+    return _invitedChannel;
+}
+
 string Client::GetClientColor()
 {
     return _clientColor;
 }
+

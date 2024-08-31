@@ -1,9 +1,9 @@
 #include "../Server/Server.hpp"
 #include <sstream> //-> for std::istringstream
 
-std::vector<string> SplitCommand(string command) // Split the command
+vector<string> SplitCommand(string command) // Split the command
 {
-    std::vector<string> commandList;
+    vector<string> commandList;
     std::istringstream stm(command);
     string token;
 
@@ -24,7 +24,7 @@ int Server::FindCommandInMap(string command)
     return _commandsMap[command];
 }
 
-void Server::RouterCommands(int fd, int commandIndex, std::vector<string> command)
+void Server::RouterCommands(int fd, int commandIndex, vector<string> command)
 {
     switch (commandIndex)
     {
@@ -40,10 +40,13 @@ void Server::RouterCommands(int fd, int commandIndex, std::vector<string> comman
         case MODE:
             ClientMode(fd, command);
             break;
+        case INVITE:
+            ClientInvite(fd, command);
+            break;
     }
 }
 
-void Server::RouterLoginCommands(int fd, int commandIndex, std::vector<string> command)
+void Server::RouterLoginCommands(int fd, int commandIndex, vector<string> command)
 {
     Client &client = GetClient(fd);
     switch (commandIndex)
@@ -73,7 +76,7 @@ void Server::ParseClientCommands(int fd, string command)
 {
     if (command.empty())
         return;
-    std::vector<string> commandList = SplitCommand(command);
+    vector<string> commandList = SplitCommand(command);
     int commandIndex = FindCommandInMap(commandList[0]);
 
     if (commandList.size() && commandIndex <= 0)

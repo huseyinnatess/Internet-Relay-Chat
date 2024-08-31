@@ -53,3 +53,8 @@ void Client::SetOldNickname(string oldNickname)
     else
         _oldNickname = oldNickname;
 }
+
+void Client::SetInvitedChannel(string channelName)
+{
+    _invitedChannel = channelName;
+}

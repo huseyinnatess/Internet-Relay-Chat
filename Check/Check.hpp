@@ -3,7 +3,17 @@
 
 #include <string>
 
-bool CheckPassword(string password);
+/* ----------------- Main Arguments Check ----------------- */
 bool CheckPort(int port);
+
+/* ----------------- Password Check ----------------------- */
+bool CheckPassword(string password);
+
+/* ----------------- Nickname Check ----------------------- */
+bool CheckIsValidNickname(string nickname);
+
+/* ----------------- Channel Check ------------------------ */
+bool CheckChannelName(string channelName);
+
 
 #endif
