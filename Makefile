@@ -5,7 +5,8 @@ SERVER = ./Server
 CLIENT = ./Client
 COMMANDS = ./Commands
 CHANNEL = ./Channel
-ERROR = ./Error
+MESSAGE = ./MESSAGE
+CHECK = ./Check
 
 SRC =	SERVER/Server.cpp \
 		SERVER/AcceptClient.cpp \
@@ -31,9 +32,9 @@ SRC =	SERVER/Server.cpp \
 		CHANNEL/Channel.cpp \
 		CHANNEL/GetFunctions.cpp \
 		CHANNEL/SetFunctions.cpp \
-		ERROR/Error.cpp \
+		MESSAGE/Message.cpp \
+		CHECK/CommandsCheck.cpp \
 		PRINT/Print.cpp \
-		CheckArguments.cpp \
 		main.cpp
 
 OBJDIR = Output

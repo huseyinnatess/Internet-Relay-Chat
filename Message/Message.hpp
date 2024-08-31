@@ -38,6 +38,7 @@
 #define ERR_CHANOPRIVSNEEDED(channelName)               ": 482 " + channelName + " :You're not channel operator\r\n"
 
 /* -------------------- MODE ERROR MESSAGES -------------------- */
+#define ERR_UNKNOWNMODE(channelName)                    ": 472 " + channelName + " :is unknown mode char to me\r\n"
 
 #include "../Print/Print.hpp"
 #include <string>

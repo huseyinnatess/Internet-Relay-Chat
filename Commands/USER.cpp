@@ -12,11 +12,6 @@ string MergeCommand(std::vector<string> command)
     return mergedCommand;
 }
 
-bool CheckFormat(string username)
-{
-    return (username[0] == ':');
-}
-
 void Server::ClientUsername(int fd, std::vector<string> command)
 {
     Client& client = GetClient(fd);
@@ -29,7 +24,7 @@ void Server::ClientUsername(int fd, std::vector<string> command)
         return;
     }
 
-    if (CheckFormat(username) == false)
+    if (username[0] == ':')
         return;
 
     if (client.GetRegistered() || CheckIsUsing(username, "username") || client.GetUsername() != "Client")

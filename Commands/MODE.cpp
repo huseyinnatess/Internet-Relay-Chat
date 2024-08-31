@@ -11,7 +11,7 @@ void Server::ModeOperator(int fd, Channel &channel, string clientName)
             return;
         }
     }
-    SendError(fd, "User not found\r\n");
+    SendError(fd, "Client not found\r\n");
 }
 
 void ModePassword(int fd, Channel &channel, string password)
@@ -61,18 +61,22 @@ void Server::ClientMode(int fd, std::vector<string> channelNames)
         SendError(fd, ERR_CHANOPRIVSNEEDED(channel.GetChannelName()));
         return;
     }
-        
+
     if (channelNames[1] == "+o")
     {
         ModeOperator(fd, channel, channelNames[2]);
         ShowChannelInformations(fd, channel.GetChannelName());
+        return;
     }
     if (channelNames[1] == "+k")
     {
         ModePassword(fd, channel, channelNames[2]);
+        return;
     }
     if (channelNames[1] == "+l")
     {
         ModeChannelLimit(fd, channel, channelNames[2]);
+        return;
     }
+    SendError(fd, ERR_UNKNOWNMODE(channel.GetChannelName()));
 }

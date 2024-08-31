@@ -25,3 +25,22 @@ void Server::SendAllClientsMessage(std::vector<int> fds, string message)
             std::cerr << "Error: send() failed" << std::endl;
     }
 }
+
+void Server::ShowChannelInformations(int fd, string channelName)
+{
+    int index = GetCreatedChannelIndex(channelName);
+    string messages = "";
+    Channel &channel = CreatedChannels[index];
+    std::vector<int> fds;
+    for (size_t i = 0; i < channel.RegisteredUsersFd.size(); i++)
+    {
+        Client &client = GetClient(channel.RegisteredUsersFd[i]);
+        if (client.GetNickname() == channel.GetOperator())
+            messages += "@";
+        fds.push_back(client.GetFd());
+        messages += client.GetNickname() + " ";
+    }
+    Client &requestingClient = GetClient(fd);
+    SendAllClientsMessage(fds, RPL_NAMREPLY(requestingClient.GetNickname(), channelName, messages));
+    SendAllClientsMessage(fds, RPL_ENDOFNAMES(requestingClient.GetNickname(), channelName));
+}

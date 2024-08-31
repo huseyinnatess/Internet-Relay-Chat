@@ -2,28 +2,6 @@
 #include "../Channel/Channel.hpp"
 #include <sstream> //-> for std::istringstream
 
-bool CheckChannelName(string channelName)
-{
-    if (channelName.empty() || channelName.size() == 1)
-    {
-        return true;
-    }
-
-    if (channelName[0] != '#' && channelName[0] != '&')
-    {
-        return true;
-    }
-
-    for (size_t i = 0; i < channelName.length(); i++)
-    {
-        if (channelName[i] == 7)
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
 void SplitChannelKeys(string channelKeys, std::vector<string>& keys)
 {
     if (channelKeys.empty() || channelKeys.size() == 1 || channelKeys[0] == '#'
@@ -117,38 +95,6 @@ void Server::ClientJoin(int fd, std::vector<string>& channelNames)
     }
 }
 
-int Server::CheckClientRegistered(int fd, string channelName)
-{
-    Client &client = GetClient(fd);
-    int index = GetCreatedChannelIndex(channelName);
-    if (index == -1)
-    {
-        return 0;
-    }
-    Channel &channel = CreatedChannels[index];
-
-    for (size_t i = 0; i < channel.RegisteredUsersFd.size(); i++)
-    {
-        if (channel.RegisteredUsersFd[i] == fd)
-        {
-            return 1;
-        }
-    }
-    return 0;
-}
-
-int Server::CheckChannelIsCreated(string channelName)
-{
-    for (size_t i = 0; i < CreatedChannels.size(); i++)
-    {
-        if (CreatedChannels[i].GetChannelName() == channelName)
-        {
-            return 1;
-        }
-    }
-    return 0;
-}
-
 void Server::JoinChannel(int fd, string channelName, int index)
 {
     Client &client = GetClient(fd);
@@ -192,24 +138,5 @@ void Server::CreateAndJoinChannel(int fd, string channelName, string key)
     CreatedChannels.push_back(newChannel);
     SendMessage(fd, RPL_JOIN(GetClient(fd).GetNickname(), GetClient(fd).GetIpAddress(), channelName));
     ShowChannelInformations(fd, channelName);
-}
-
-void Server::ShowChannelInformations(int fd, string channelName)
-{
-    int index = GetCreatedChannelIndex(channelName);
-    string messages = "";
-    Channel &channel = CreatedChannels[index];
-    std::vector<int> fds;
-    for (size_t i = 0; i < channel.RegisteredUsersFd.size(); i++)
-    {
-        Client &client = GetClient(channel.RegisteredUsersFd[i]);
-        if (client.GetNickname() == channel.GetOperator())
-            messages += "@";
-        fds.push_back(client.GetFd());
-        messages += client.GetNickname() + " ";
-    }
-    Client &requestingClient = GetClient(fd);
-    SendAllClientsMessage(fds, RPL_NAMREPLY(requestingClient.GetNickname(), channelName, messages));
-    SendAllClientsMessage(fds, RPL_ENDOFNAMES(requestingClient.GetNickname(), channelName));
 }
 

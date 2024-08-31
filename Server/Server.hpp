@@ -3,7 +3,7 @@
 
 #include "../Client/Client.hpp"
 #include "../Print/Print.hpp"
-#include "../Error/Error.hpp"
+#include "../Message/Message.hpp"
 #include <vector>
 #include <sys/socket.h> //-> for socket()
 #include <sys/types.h> //-> for socket()
