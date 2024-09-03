@@ -45,10 +45,11 @@ void Server::ClientMode(int fd, vector<string> commands)
         return;
     }
     commands.erase(commands.begin());
-    int index = GetCreatedChannelIndex(commands[0]);
+    vector<string> channelName = SplitChannelNames(commands);
+    int index = GetCreatedChannelIndex(channelName[0]);
     if (index == -1)
     {
-        SendError(fd, ERR_NOSUCHCHANNEL(commands[0]));
+        SendError(fd, ERR_NOSUCHCHANNEL(channelName[0]));
         return;
     }
 
@@ -69,7 +70,7 @@ void Server::ClientMode(int fd, vector<string> commands)
     }
     if (commands[1] == "+k")
     {
-        ModePassword(fd, channel, commands[2]);
+        ModePassword(fd, channel, commands[3]);
         return;
     }
     if (commands[1] == "-k")

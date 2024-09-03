@@ -38,64 +38,61 @@ void Server::ClientJoin(int fd, vector<string> channelNames)
     }
     vector<string> channels = SplitChannelNames(channelNames);
 
-    for (size_t i = 0; i < channels.size(); i++)
+    string channelName = channels[0];
+    string key = "";
+    if ((channelName[0] != '#' && channelName[0] != '&') || channelName.size() == 1)
     {
-        string channelName = channels[i];
-        string key = "";
-        if ((channelName[0] != '#' && channelName[0] != '&') || channelName.size() == 1)
+        SendError(fd, ERR_INVCHANNAME);
+        return;
+    }
+    if (keys.size() > 0)
+    {
+        key = keys[0];
+    }
+    if (CheckClientRegistered(fd, channelName))
+        return;
+
+    if (CheckChannelIsCreated(channelName))
+    {
+        int index = GetCreatedChannelIndex(channelName);
+        Channel &channel = CreatedChannels[index];
+
+        // Check if channel is full
+        if (channel.GetUserCount() == channel.GetUserLimit())
         {
-            SendError(fd, ERR_INVCHANNAME);
-            continue;
+            SendError(fd, ERR_CHANNELISFULL(channelName));
+            return;
         }
-        if (keys.size() > i)
+        if (channel.GetInviteOnly() && GetClient(fd).GetInvitedChannel() != channelName)
         {
-            key = keys[i];
+            SendError(fd, ERR_INVITEONLYCHAN(channelName));
+            return;
         }
-       if (CheckClientRegistered(fd, channelName))
-            continue;
 
-       if (CheckChannelIsCreated(channelName))
-       {
-            int index = GetCreatedChannelIndex(channelName);
-            Channel &channel = CreatedChannels[index];
-
-            // Check if channel is full
-            if (channel.GetUserCount() == channel.GetUserLimit())
-            {
-                SendError(fd, ERR_CHANNELISFULL(channelName));
-                continue;
-            }
-            if (channel.GetInviteOnly() && GetClient(fd).GetInvitedChannel() != channelName)
-            {
-                SendError(fd, ERR_INVITEONLYCHAN(channelName));
-                continue;
-            }
-            
-            // Check if channel is password protected
-            if (channel.GetIsPasswordProtected())
-            {
-                if (channel.GetKey() == key)
-                {
-                    JoinChannel(fd, channelName, index);
-                }
-                else
-                {
-                    SendError(fd, ERR_BADCHANNELKEY(channelName));
-                    printf("Channel key is not valid\n");
-                    continue;
-                }
-            }
-
-            // If channel is not password protected
-            else if (!channel.GetIsPasswordProtected())
+        // Check if channel is password protected
+        if (channel.GetIsPasswordProtected())
+        {
+            if (channel.GetKey() == key)
             {
                 JoinChannel(fd, channelName, index);
             }
-       }
-       else
-       {
-            CreateAndJoinChannel(fd, channelName, key);
-       }
+            else
+            {
+                SendError(fd, ERR_BADCHANNELKEY(channelName));
+                print("Channel key is not valid\n");
+                return;
+            }
+        }
+
+        // If channel is not password protected
+        else if (!channel.GetIsPasswordProtected())
+        {
+            JoinChannel(fd, channelName, index);
+        }
+    }
+    else
+    {
+        CreateAndJoinChannel(fd, channelName, key);
     }
 }
 

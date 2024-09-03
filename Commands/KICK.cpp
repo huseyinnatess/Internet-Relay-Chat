@@ -13,11 +13,11 @@ void Server::ClientKick(int fd, vector<string> commands)
     {
         commands[1].erase(commands[1].begin());
     }
-    string channelName = commands[0];
+    vector<string> channelName = SplitChannelNames(commands);
 
-    if (CheckChannelIsCreated(channelName) == 0)
+    if (CheckChannelIsCreated(channelName[0]) == 0)
     {
-        SendError(fd, ERR_NOSUCHCHANNEL(channelName));
+        SendError(fd, ERR_NOSUCHCHANNEL(channelName[0]));
         return;
     }
     if (CheckClient(commands[1]) == 0)
@@ -27,11 +27,11 @@ void Server::ClientKick(int fd, vector<string> commands)
     }
     Client &client = GetClient(fd);
     Client &targetClient = GetClient(commands[1]);
-    Channel &channel = CreatedChannels[GetCreatedChannelIndex(channelName)];
+    Channel &channel = CreatedChannels[GetCreatedChannelIndex(channelName[0])];
     
     if (client.GetNickname() != channel.GetOperator())
     {
-        SendError(fd, ERR_CHANOPRIVSNEEDED(channelName));
+        SendError(fd, ERR_CHANOPRIVSNEEDED(channelName[0]));
         return;
     }
 
@@ -41,8 +41,7 @@ void Server::ClientKick(int fd, vector<string> commands)
         return;
     }
 
-    RemoveChannelFromClient(targetClient.GetFd(), channelName);
-    SendAllClientsMessage(channel.RegisteredUsersFd, RPL_KICK(client.GetNickname(), targetClient.GetNickname(), channelName));
-    SendMessage(targetClient.GetFd(), RPL_KICK(targetClient.GetNickname(), targetClient.GetNickname(), channelName));
-    ShowChannelInformations(fd, channelName);
+    SendAllClientsMessage(channel.RegisteredUsersFd, RPL_KICK(client.GetNickname(), targetClient.GetNickname(), channelName[0]));
+    SendMessage(targetClient.GetFd(), RPL_KICK(targetClient.GetNickname(), targetClient.GetNickname(), channelName[0]));
+    RemoveChannelFromClient(targetClient.GetFd(), channelName[0]);
 }

@@ -108,10 +108,12 @@ private:
     void JoinChannel(int fd, string channelName, int index);
     void CreateAndJoinChannel(int fd, string channelName, string key);
     vector<string> SplitChannelNames(vector<string> channelNames);
-    void RemoveChannel(int channelIndex);
+    void ModeOperator(int fd, Channel &channel, string clientName);
+
+    /* ----------------- Remove Functions ----------------- */
+    void RemoveChannel(int fd, int channelIndex, string clientNickname);
     void RemoveChannelFromClient(int fd, string channelName);
     void RemoveChannelRegisteredUser(int fd, string channelName);
-    void ModeOperator(int fd, Channel &channel, string clientName);
 
 };
 

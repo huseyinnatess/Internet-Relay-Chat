@@ -8,11 +8,12 @@ void Server::ClientInvite(int fd, vector<string> commands)
         return;
     }
     commands.erase(commands.begin());
+    vector<string> channels = SplitChannelNames(commands);
 
-    int index = GetCreatedChannelIndex(commands[0]);
+    int index = GetCreatedChannelIndex(channels[0]);
     if (index == -1)
     {
-        SendMessage(fd, ERR_NOSUCHCHANNEL(commands[0]));
+        SendMessage(fd, ERR_NOSUCHCHANNEL(channels[0]));
         return;
     }
     if (CheckClient(commands[1]) == 0)
@@ -31,6 +32,6 @@ void Server::ClientInvite(int fd, vector<string> commands)
         return;
     }
 
-    targetClient.SetInvitedChannel(commands[0]);
+    targetClient.SetInvitedChannel(channels[0]);
     SendMessage(targetClient.GetFd(), RPL_INVITE(client.GetNickname(), client.GetIpAddress(), channel.GetChannelName(), commands[1]));
 }
