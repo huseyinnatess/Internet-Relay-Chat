@@ -46,6 +46,9 @@ void Server::RouterCommands(int fd, int commandIndex, vector<string> command)
         case KICK:
             ClientKick(fd, command);
             break;
+        case PRIVMSG:
+            ClientPrivmsg(fd, command);
+            break;
     }
 }
 
@@ -85,7 +88,7 @@ void Server::ParseClientCommands(int fd, string command)
     if (commandList.size() && commandIndex <= 0)
         return;
     
-    CheckDoubleCommands(commandList);
+    // CheckDoubleCommands(commandList);
 
     RouterLoginCommands(fd, commandIndex, commandList);
 }

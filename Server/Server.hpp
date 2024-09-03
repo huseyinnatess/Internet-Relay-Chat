@@ -87,6 +87,7 @@ private:
     void ClientMode(int fd, vector<string> commands); // MODE
     void ClientInvite(int fd, vector<string> commands); // INVITE
     void ClientKick(int fd, vector<string> commands); // KICK
+    void ClientPrivmsg(int fd, vector<string> commands); // PRIVMSG
 
     /* ----------------- Check Functions ----------------- */
     bool CheckIsUsing(string value, string checkValue);

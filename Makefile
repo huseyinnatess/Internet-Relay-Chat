@@ -31,6 +31,7 @@ SRC =	SERVER/Server.cpp \
 		COMMANDS/MODE.cpp \
 		COMMANDS/INVITE.cpp \
 		COMMANDS/KICK.cpp \
+		COMMANDS/PRIVMSG.cpp \
 		CHANNEL/Channel.cpp \
 		CHANNEL/GetFunctions.cpp \
 		CHANNEL/SetFunctions.cpp \

@@ -49,6 +49,9 @@
 #define ERR_CHANOPKICK(target)                          ": 482 " + target + " :You cannot KICK yourself" + "\r\n"
 #define RPL_KICK(nick, target, channel)                 ":" + nick + " KICK " + channel + " " + target + "\r\n"
 
+/* -------------------- PRIVMSG ERROR MESSAGES -------------------- */
+#define RPL_PRIVMSG(source, target, message)		    ":" + source + " PRIVMSG " + target + " :" + message + "\r\n"
+#define ERR_CANNOTSENDTOSELF()                          ": 400 :Cannot send to self\r\n"
 
 #include "../Server/Server.hpp"
 
