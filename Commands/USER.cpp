@@ -27,7 +27,7 @@ void Server::ClientUsername(int fd, vector<string> command)
     if (username[0] == ':')
         return;
 
-    if (client.GetRegistered() || CheckIsUsing(username, "username") || client.GetUsername() != "Client")
+    if (CheckIsUsing(username, "username") || client.GetUsername() != "Client")
     {
         SendError(fd, ERR_ALREADYREGISTRED);
         return;
@@ -35,6 +35,11 @@ void Server::ClientUsername(int fd, vector<string> command)
 
     if (client.GetUsername() == "Client")
     {
+        if (username.find_first_of(" ") != string::npos)
+        {
+            username = username.substr(0, username.find_first_of(" "));
+        }
         client.SetUsername(username);
+        print("Username: " + client.GetUsername(), client.GetClientColor());
     }
 }

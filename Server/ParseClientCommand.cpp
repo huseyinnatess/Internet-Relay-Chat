@@ -75,9 +75,14 @@ void Server::RouterLoginCommands(int fd, int commandIndex, vector<string> comman
             ClientQuit(fd);
             break;
         default:
-            // if (!client.GetLoggedIn())
-            //     SendError(fd, ERR_NOTREGISTERED(client.GetNickname()));
-            // else
+            if (!client.GetRegistered() || client.GetNickname() == "Client" || client.GetUsername() == "Client")
+            {
+                SendError(fd, ERR_NOTREGISTERED(client.GetNickname()));
+                print("Pass: " + ConvertToString(!client.GetRegistered()));
+                print("Nick: " + client.GetNickname());
+                print("Username: " + client.GetUsername());
+            }
+            else
             RouterCommands(fd, commandIndex, command);
         break;
     }
@@ -94,7 +99,7 @@ void Server::ParseClientCommands(int fd, string command)
     if (commandList.size() && commandIndex < 0)
         return;
     
-    // CheckDoubleCommands(commandList);
+    CheckDoubleCommands(commandList);
 
     RouterLoginCommands(fd, commandIndex, commandList);
 }

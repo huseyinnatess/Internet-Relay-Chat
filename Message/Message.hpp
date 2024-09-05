@@ -4,12 +4,14 @@
 /* -------------------- GENERAL ERROR MESSAGES -------------------- */
 #define ERR_NEEDMOREPARAMS(command)			            ": 461 " + command + " :Not enough parameters" + "\r\n"              //MODE
 #define ERR_NOSUCHCHANNEL(channelName)			        ": 403 " + channelName + " :No such channel" + "\r\n"
+#define ERR_NOTREGISTERED(nick)				            ": 451 " + nick + " :You have not registered\r\n"
 
 /* -------------------- PASS ERROR MESSAGES -------------------- */
 #define ERR_PASSWDMISMATCH                              ":Password incorrect\r\n"
 
 /* -------------------- USER ERROR MESSAGES -------------------- */
 #define ERR_ALREADYREGISTRED                            ": 462 :You may not reregister\r\n"
+#define ERR_CANNOTCHANGEUSERNAME(nick)                   ": 503 " + nick + " :You may not change your username\r\n"
 
 /* -------------------- NICK ERROR MESSAGES -------------------- */
 #define ERR_ERRONEUSNICKNAME(nick)			            ": 432 " + nick + " :Erroneus nickname" + "\r\n"                      //NICK

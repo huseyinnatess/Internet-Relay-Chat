@@ -11,7 +11,6 @@ void Server::ClientAutherization(int fd, vector<string> command)
     }
     else
     {
-        SendError(fd, ERR_PASSWDMISMATCH, 1);
+        SendError(fd, ERR_PASSWDMISMATCH);
     }
-
 }
