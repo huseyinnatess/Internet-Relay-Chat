@@ -3,7 +3,10 @@
 
 bool Server::CheckIsUsing(string value, string checkValue)
 {
-    value = value.substr(1, value.size()); // Remove the first character :
+    if (value[0] == ':')
+    {
+        value = value.substr(1, value.size());
+    }
     
     if (checkValue == "nickname")
     {

@@ -4,6 +4,12 @@ void Server::ClientNick(int fd, vector<string> command)
 {
     Client &client = GetClient(fd);
 
+    if (!client.GetRegistered())
+    {
+        SendError(fd, ERR_NOTREGISTERED(client.GetNickname()));
+        return;
+    }
+
     if (command.size() != 2)
     {
         SendError(fd, ERR_NONICKNAMEGIVEN);
