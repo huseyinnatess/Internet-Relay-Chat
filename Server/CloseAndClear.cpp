@@ -5,14 +5,17 @@ void Server::SetClosedClientDefaultValue(int fd)
     Client &client = GetClient(fd);
     ClearClients(fd);
     
-    client.SetLoggedIn(false);
     client.SetRegistered(false);
     client.SetNickname("Client");
     client.SetUsername("Client");
     client.SetBuffer("");
     client.SetIpAddress("");
     client.SetClientColor("");
-
+    client.SetConnectionType(false);
+    client.SetInvitedChannel("");
+    client.SetFd(-1);
+    client.RegisteredChannels.clear();
+    
     close(fd);
 }
 

@@ -10,11 +10,6 @@ bool Client::GetRegistered()
     return _isRegistered;
 }
 
-bool Client::GetLoggedIn()
-{
-    return _isLoggedIn;
-}
-
 string Client::GetUsername()
 {
     return _username;

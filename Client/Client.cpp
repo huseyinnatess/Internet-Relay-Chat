@@ -3,7 +3,6 @@
 Client::Client() : _nickname("Client"), _username("Client"), _fd(-1) 
 {
     _oldNickname = "";
-    _isLoggedIn = false;
     _isOperator = false;
     _isRegistered = false;
     _buffer = "";
@@ -35,7 +34,6 @@ void Client::CopyFrom(Client const &client)
     _fd = client._fd;
     _oldNickname = client._oldNickname;
     _registeredChannelCount = client._registeredChannelCount;
-    _isLoggedIn = client._isLoggedIn;
     _isOperator = client._isOperator;
     _isRegistered = client._isRegistered;
     _buffer = client._buffer;

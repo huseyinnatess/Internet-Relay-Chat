@@ -20,11 +20,6 @@ void Client::SetBuffer(string buffer)
     _buffer += buffer;
 }
 
-void Client::SetLoggedIn(bool isLoggedIn)
-{
-    _isLoggedIn = isLoggedIn;
-}
-
 void Client::SetRegistered(bool isRegistered)
 {
     _isRegistered = isRegistered;

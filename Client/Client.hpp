@@ -19,14 +19,12 @@ public:
     /* ----------------- Getter Functions ----------------- */
     int GetFd();
     bool GetRegistered();
-    bool GetLoggedIn();
     bool GetConnectionType();
     string GetInvitedChannel();
     string GetUsername();
     string GetNickname();
     string GetIpAddress();
     string GetBuffer();
-    string GetHostName();
     string GetClientColor();
     /* ----------------------------------------------------- */
 
@@ -34,7 +32,6 @@ public:
     void SetFd(int fd);
     void SetRegistered(bool isRegistered);
     void SetInvitedChannel(string channelName);
-    void SetLoggedIn(bool isLoggedIn);
     void SetUsername(string username);
     void SetNickname(string nickname);
     void SetOldNickname(string oldNickname);
@@ -52,7 +49,6 @@ private:
     int _fd;
     int _registeredChannelCount;
 
-    bool _isLoggedIn;
     bool _isOperator;
     bool _isRegistered;
     bool _connectionType;
@@ -63,7 +59,6 @@ private:
     string _ipAddress;
     string _clientColor;
     string _buffer;
-    string _hostName;
     string _invitedChannel;
 
     /* ----------------- Other Functions ----------------- */
