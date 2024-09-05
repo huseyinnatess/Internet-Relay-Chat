@@ -17,7 +17,7 @@
 
 enum Commands
 {
-    BONG,
+    CAP,
     PASS,
     NICK,
     USER,
@@ -77,6 +77,7 @@ private:
     int FindCommandInMap(string command);
 
     /* ----------------- Command Functions ----------------- */
+    void ClientCap(int fd, vector<string> command); // CAP
     void ClientAutherization(int fd, vector<string> command); // PASS
     void ClientNick(int fd, vector<string> command); // NICK
     void ClientUsername(int fd, vector<string> command); // USER

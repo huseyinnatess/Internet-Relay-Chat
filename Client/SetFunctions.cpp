@@ -58,3 +58,8 @@ void Client::SetInvitedChannel(string channelName)
 {
     _invitedChannel = channelName;
 }
+
+void Client::SetConnectionType(bool connectionType)
+{
+    _connectionType = connectionType;
+}

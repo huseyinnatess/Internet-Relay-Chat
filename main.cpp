@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
     }
     catch (const std::exception& e)
     {
-        // server.CloseFds();
+        server.CloseFds();
         print(e.what(), RED);
     }
     print("------- The Server Closed ----", YELLOW);

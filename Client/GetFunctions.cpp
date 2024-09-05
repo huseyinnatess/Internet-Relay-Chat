@@ -50,3 +50,8 @@ string Client::GetClientColor()
     return _clientColor;
 }
 
+bool Client::GetConnectionType()
+{
+    return _connectionType;
+}
+

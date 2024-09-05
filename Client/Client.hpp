@@ -1,6 +1,9 @@
 #ifndef CLIENT_HPP
 #define CLIENT_HPP
 
+#define HEXCHAT 1
+#define NC      0
+
 #include "../Channel/Channel.hpp"
 
 class Client
@@ -17,6 +20,7 @@ public:
     int GetFd();
     bool GetRegistered();
     bool GetLoggedIn();
+    bool GetConnectionType();
     string GetInvitedChannel();
     string GetUsername();
     string GetNickname();
@@ -37,6 +41,7 @@ public:
     void SetBuffer(string buffer);
     void SetIpAddress(string ipAddress);
     void SetClientColor(string clientColor);
+    void SetConnectionType(bool connectionType);
     /* ----------------------------------------------------- */
     
     /* ----------------- Other Functions ----------------- */
@@ -50,6 +55,7 @@ private:
     bool _isLoggedIn;
     bool _isOperator;
     bool _isRegistered;
+    bool _connectionType;
 
     string _username;
     string _nickname;
@@ -59,6 +65,10 @@ private:
     string _buffer;
     string _hostName;
     string _invitedChannel;
+
+    /* ----------------- Other Functions ----------------- */
+    void CopyFrom(Client const &client);
+    /* ----------------------------------------------------- */
 };
 
 #endif

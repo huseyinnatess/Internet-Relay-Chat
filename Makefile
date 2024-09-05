@@ -21,6 +21,7 @@ SRC =	SERVER/Server.cpp \
 		CLIENT/GetFunctions.cpp \
 		CLIENT/SetFunctions.cpp \
 		COMMANDS/Commands.cpp \
+		COMMANDS/CAP.cpp \
 		COMMANDS/PASS.cpp \
 		COMMANDS/NICK.cpp \
 		COMMANDS/USER.cpp \

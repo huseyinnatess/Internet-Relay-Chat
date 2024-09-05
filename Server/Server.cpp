@@ -35,6 +35,7 @@ void Server::ServerLoop()
 
 void Server::InitializeCommandMap() 
 {
+    _commandsMap["CAP"] = CAP;
     _commandsMap["PASS"] = PASS;
     _commandsMap["NICK"] = NICK;
     _commandsMap["USER"] = USER;

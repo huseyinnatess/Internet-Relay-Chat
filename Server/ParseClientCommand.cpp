@@ -12,13 +12,14 @@ vector<string> SplitCommand(string command) // Split the command
         commandList.push_back(token);
         token.clear();
     }
-    
     return commandList;
 }
 
 int Server::FindCommandInMap(string command)
 {
     command = ConvertToUpperCase(command);
+
+
     if (_commandsMap.find(command) == _commandsMap.end() || command.empty())
         return -1;
     return _commandsMap[command];
@@ -55,8 +56,12 @@ void Server::RouterCommands(int fd, int commandIndex, vector<string> command)
 void Server::RouterLoginCommands(int fd, int commandIndex, vector<string> command)
 {
     Client &client = GetClient(fd);
+
     switch (commandIndex)
     {
+        case CAP:
+            ClientCap(fd, command);
+            break;
         case PASS:
             ClientAutherization(fd, command);
             break;
@@ -83,9 +88,10 @@ void Server::ParseClientCommands(int fd, string command)
     if (command.empty())
         return;
     vector<string> commandList = SplitCommand(command);
+
     int commandIndex = FindCommandInMap(commandList[0]);
 
-    if (commandList.size() && commandIndex <= 0)
+    if (commandList.size() && commandIndex < 0)
         return;
     
     // CheckDoubleCommands(commandList);
