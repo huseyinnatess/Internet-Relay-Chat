@@ -1,16 +1,9 @@
 #include "Client.hpp"
+#include "../Print/Print.hpp"
 
-Client::Client()
+Client::Client() : _nickname("Client"), _username("Client"), _fd(-1) 
 {
-    Client("Client", "Client", -1);
-}
-
-Client::Client(string nickname, string username, int fd)
-{
-    _nickname = nickname;
-    _username = username;
     _oldNickname = "";
-    _fd = fd;
     _isLoggedIn = false;
     _isOperator = false;
     _isRegistered = false;

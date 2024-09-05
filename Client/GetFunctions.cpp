@@ -35,11 +35,6 @@ string Client::GetBuffer()
     return _buffer;
 }
 
-string Client::GetHostName()
-{
-    return _hostName;
-}
-
 string Client::GetInvitedChannel()
 {
     return _invitedChannel;
