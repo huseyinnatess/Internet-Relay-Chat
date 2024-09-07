@@ -114,7 +114,7 @@ private:
     /* ----------------- Remove Functions ----------------- */
     void RemoveChannel(int fd, int channelIndex, string clientNickname);
     void RemoveChannelFromClient(int fd, string channelName);
-    void RemoveChannelRegisteredUser(int fd, string channelName);
+    void RemoveChannelRegisteredUser(Client& client , string channelName);
 
 };
 

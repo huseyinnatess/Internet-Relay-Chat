@@ -48,7 +48,8 @@ void Server::ClientTopic(int fd, vector<string> channelNames)
     {
         if (channel.GetOperator() == client.GetNickname())
         {
-            topic.substr(0, topic.size() - 1);
+            if (topic[0] == ':')
+                topic.substr(0, topic.size() - 1);
             channel.SetTopic(topic);
             SendAllClientsMessage(channel.RegisteredUsersFd, RPL_TOPIC(client.GetNickname(), client.GetIpAddress(), channel.GetChannelName(), channel.GetTopic()));
             print("Topic changed to: " + channel.GetTopic(), GREEN);

@@ -3,6 +3,7 @@
 void Server::RemoveChannel(int fd, int channelIndex, string clientNickname)
 {
     SendMessage(fd, RPL_PART(clientNickname, CreatedChannels[channelIndex].GetChannelName()));
+    print("Channel " + CreatedChannels[channelIndex].GetChannelName() + " is removed\n");
     CreatedChannels.erase(CreatedChannels.begin() + channelIndex);
 }
 
@@ -10,23 +11,23 @@ void Server::RemoveChannel(int fd, int channelIndex, string clientNickname)
 void Server::RemoveChannelFromClient(int fd, string channelName)
 {
     Client &client = GetClient(fd);
-    for (size_t j = 0; j < client.RegisteredChannels.size(); j++)
+    for (size_t i = 0; i < client.RegisteredChannels.size(); i++)
     {
-        if (client.RegisteredChannels[j].GetChannelName() == channelName)
+        if (client.RegisteredChannels[i].GetChannelName() == channelName)
         {
-            client.RegisteredChannels.erase(client.RegisteredChannels.begin() + j);
+            client.RegisteredChannels.erase(client.RegisteredChannels.begin() + i);
             break;
         }
     }
-    RemoveChannelRegisteredUser(fd, channelName);
+    RemoveChannelRegisteredUser(client, channelName);
 }
 
 // Remove channel from registered users
-void Server::RemoveChannelRegisteredUser(int fd, string channelName)
+void Server::RemoveChannelRegisteredUser(Client& client, string channelName)
 {
     int index = GetCreatedChannelIndex(channelName);
     Channel &channel = CreatedChannels[index];
-    Client &client = GetClient(fd);
+    int fd = client.GetFd();
 
     for (size_t i = 0; i < channel.RegisteredUsersFd.size(); i++)
     {

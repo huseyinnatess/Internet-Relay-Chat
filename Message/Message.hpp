@@ -35,13 +35,13 @@
 
 /* -------------------- CHANNEL ERROR MESSAGES -------------------- */
 #define ERR_BADCHANNELKEY(channelName)                  ": 475 " + channelName + " :Cannot join channel (+k)\r\n"
-#define ERR_INVCHANNAME                                 ": 479 :Invalid channel name\r\n"
+#define ERR_INVCHANNAME                                 "Invalid channel name, must be: #<channel name> <?key>\r\n"
 
 /* -------------------- TOPIC ERROR MESSAGES -------------------- */
 #define ERR_CHANOPRIVSNEEDED(channelName)               ": 482 " + channelName + " :You're not channel operator\r\n"
 
 /* -------------------- MODE ERROR MESSAGES -------------------- */
-#define ERR_UNKNOWNMODE(channelName)                    ": 472 " + channelName + " :is unknown mode char to me\r\n"
+#define ERR_UNKNOWNMODE(source, channel, mode)		": 472 " + source + " " +  channel + " :Unknown Mode " + mode + "\r\n"
 
 /* -------------------- INVITE ERROR MESSAGES -------------------- */
 #define RPL_INVITE(nick, ip, channel, target)           ":" + nick + "!" + nick + "@" + ip + " INVITE " + target + " " + channel + "\r\n"

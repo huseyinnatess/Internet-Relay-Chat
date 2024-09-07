@@ -15,6 +15,7 @@ void Server::ServerInit(int port, string password)
 
 void Server::ServerLoop()
 {
+    static int i = 0;
     while (!Server::_signal)
     {
         if ((poll(&_pollFds[0], _pollFds.size(), -1)) == -1 && !Server::_signal) // Wait indefinitely for events
@@ -28,7 +29,21 @@ void Server::ServerLoop()
                 else
                     ReceiveNewData(_pollFds[i].fd);
             }
-        } 
+        }
+        if (i == 0 && Clients.size() == 1)
+        {
+            ParseClientCommands(4, "/join #ates");
+            ParseClientCommands(4, "/join #atd");
+            ParseClientCommands(4, "/join #atc");
+            ParseClientCommands(4, "/join #atb");
+            ParseClientCommands(4, "/join #ata");
+            ParseClientCommands(4, "/join #atf");
+            ParseClientCommands(4, "/join #atg");
+            sleep(.5);
+            ParseClientCommands(4, "quit");
+            Server::_signal = true;
+            i++;
+        }
     }
     CloseFds();
 }

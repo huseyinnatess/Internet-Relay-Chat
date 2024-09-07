@@ -97,5 +97,5 @@ void Server::ClientMode(int fd, vector<string> commands)
         SendMessage(fd, "Channel is not invite only: " + channel.GetChannelName());
         return;
     }
-    SendError(fd, ERR_UNKNOWNMODE(channel.GetChannelName()));
+    SendError(fd, ERR_UNKNOWNMODE(client.GetNickname(), channel.GetChannelName(), commands[1]));
 }

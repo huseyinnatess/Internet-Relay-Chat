@@ -6,10 +6,16 @@ void Server::ClientQuit(int fd)
     string nickname = client.GetUsername();
     string message = nickname + ": " + " QUIT";
     
-    for (size_t i = 0; i < client.RegisteredChannels.size(); i++)
+    int size = client.RegisteredChannels.size();
+
+    for (int i = size - 1; i > -1; i--)
     {
-        RemoveChannelFromClient(fd, client.RegisteredChannels[i].GetChannelName());
+        Channel& channel = client.RegisteredChannels[i];
+        RemoveChannelRegisteredUser(client, client.RegisteredChannels[i].GetChannelName());
     }
+        
+    client.RegisteredChannels.clear();
+
     SendMessage(fd, message);
     SetClosedClientDefaultValue(fd);
 }
