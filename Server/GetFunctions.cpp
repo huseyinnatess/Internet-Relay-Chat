@@ -2,12 +2,10 @@
 
 Client& Server::GetClient(int fd)
 {
-    if (fd == 3)
-        print("Burada", GREEN);
-	for (size_t i = 0; i < this->Clients.size(); i++)
+	for (size_t i = 0; i < Clients.size(); i++)
     {
-		if (this->Clients[i].GetFd() == fd)
-			return this->Clients[i];
+		if (Clients[i].GetFd() == fd)
+			return Clients[i];
 	}
 	throw (std::runtime_error("Client not found"));
 }

@@ -32,38 +32,6 @@ void Server::ServerLoop()
                 }
             }
         }
-        // if (i == 0 && Clients.size() == 1)
-        // {
-        //     ParseClientCommands(4, "join #ates");
-        //     ParseClientCommands(4, "join #ates2");
-        //     ParseClientCommands(4, "join #ates3");
-        //     ParseClientCommands(4, "join #ates4");
-        //     ParseClientCommands(4, "join #ates5");
-        //     sleep(2);
-        //     i++;
-        // }
-        // if (i == 1 && Clients.size() == 2)
-        // {
-        //     ParseClientCommands(5, "pass password");
-        //     ParseClientCommands(5, "nick Ates");
-        //     ParseClientCommands(5, "join #ates");
-        //     ParseClientCommands(4, "join #ates2");
-        //     ParseClientCommands(4, "join #ates3");
-        //     ParseClientCommands(4, "join #ates4");
-        //     ParseClientCommands(4, "join #ates5");
-        //     sleep(3);
-        //     i++;
-        // }
-        // if (i == 2)
-        // {
-        //     ParseClientCommands(4, "quit");
-        //     i++;
-        // }
-        // if (i == 3)
-        // {
-        //     ParseClientCommands(5, "join #ates");
-        //     i++;
-        // }
     }
     CloseFds();
 }

@@ -14,7 +14,7 @@ void Server::ClientQuit(int fd)
             RemoveChannelRegisteredUser(client, channel.GetChannelName());
         }
     }
-        
+    print("Client " + nickname + " has left the server.", RED);
     SendMessage(fd, message);
     SetClosedClientDefaultValue(fd);
 }
