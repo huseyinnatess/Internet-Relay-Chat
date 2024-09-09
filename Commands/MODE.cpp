@@ -77,7 +77,6 @@ void Server::ClientMode(int fd, vector<string> commands)
     {
         channel.SetKey("");
         channel.SetIsPasswordProtected(false);
-        SendMessage(fd, "Channel key is removed: " + channel.GetChannelName());
         return;
     }
     if (commands[1] == "+l")

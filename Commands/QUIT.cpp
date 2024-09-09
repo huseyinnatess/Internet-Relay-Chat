@@ -3,19 +3,18 @@
 void Server::ClientQuit(int fd)
 {
     Client& client = GetClient(fd);
-    string nickname = client.GetUsername();
+    string nickname = client.GetNickname();
     string message = nickname + ": " + " QUIT";
     
-    int size = client.RegisteredChannels.size();
-
-    for (int i = size - 1; i > -1; i--)
+    for (int i = CreatedChannels.size() - 1; i > -1; i--)
     {
-        Channel& channel = client.RegisteredChannels[i];
-        RemoveChannelRegisteredUser(client, client.RegisteredChannels[i].GetChannelName());
+        if (CheckClientRegistered(fd, CreatedChannels[i].GetChannelName()) != 0)
+        {
+            Channel& channel = CreatedChannels[i];
+            RemoveChannelRegisteredUser(client, channel.GetChannelName());
+        }
     }
         
-    client.RegisteredChannels.clear();
-
     SendMessage(fd, message);
     SetClosedClientDefaultValue(fd);
 }

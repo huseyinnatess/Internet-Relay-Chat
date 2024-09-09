@@ -1,36 +1,6 @@
 #include "../Server/Server.hpp"
 #include <sstream> //-> for std::istringstream
 
-bool Server::CheckIsUsing(string value, string checkValue)
-{
-    if (value[0] == ':')
-    {
-        value = value.substr(1, value.size());
-    }
-    
-    if (checkValue == "nickname")
-    {
-        for (size_t i = 0; i < Clients.size(); i++)
-        {
-            if (Clients[i].GetNickname() == value)
-            {
-                return true;
-            }
-        }
-    }
-    else if (checkValue == "username")
-    {
-        for (size_t i = 0; i < Clients.size(); i++)
-        {
-            if (Clients[i].GetUsername() == value)
-            {
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
 vector<string> Server::SplitChannelNames(vector<string> channelNames)
 {
     vector<string> channels;

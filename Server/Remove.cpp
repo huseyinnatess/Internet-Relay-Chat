@@ -48,6 +48,7 @@ void Server::RemoveChannelRegisteredUser(Client& client, string channelName)
     }
     else
     {
+        SendMessage(fd, RPL_PART(client.GetNickname(), channelName));
         ShowChannelInformations(fd, channelName);
         SendAllClientsMessage(channel.RegisteredUsersFd, RPL_PART(client.GetNickname(), channelName));
     }

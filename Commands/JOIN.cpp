@@ -30,6 +30,7 @@ void Server::ClientJoin(int fd, vector<string> channelNames)
         SendError(fd, ERR_NEEDMOREPARAMS(channelNames[0]));
         return;
     }
+
     channelNames.erase(channelNames.begin()); // Removed JOIN command
     vector<string> keys;
     if (channelNames[1] != "")
@@ -103,7 +104,7 @@ void Server::JoinChannel(int fd, string channelName, int index)
     client.RegisteredChannels.push_back(channel);
     channel.SetUserCount(channel.GetUserCount() + 1);
     channel.RegisteredUsersFd.push_back(fd);
-    print("Client joined channel: " + channelName);
+    print(client.GetNickname() + " joined channel: " + channelName);
 
     if (channel.GetTopic() != "")
     {
@@ -130,11 +131,11 @@ void Server::CreateAndJoinChannel(int fd, string channelName, string key)
     if (key != "" && key != "JOIN")
     {
         newChannel.SetIsPasswordProtected(true);
-        print("Client: " + client.GetNickname() + " and joined channel: " + channelName + " with key: " + key);
+        print(client.GetNickname() + " create and joined channel: " + channelName + " with key: " + key);
     }
     else
     {
-        print("Client: "  + client.GetNickname() + " and joined channel: " + channelName);
+        print(client.GetNickname() + " create and joined channel: " + channelName);
     }
     CreatedChannels.push_back(newChannel);
     SendMessage(fd, RPL_JOIN(GetClient(fd).GetNickname(), GetClient(fd).GetIpAddress(), channelName));

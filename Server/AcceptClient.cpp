@@ -21,7 +21,7 @@ void Server::AcceptNewClient()
         print("fcntl failed", RED);
         return;
     }
-
+    
     client.SetFd(acceptedFd);
     client.SetIpAddress(inet_ntoa(clientAddr.sin_addr));
     SetClientRandomColor(client);

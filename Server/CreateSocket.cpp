@@ -1,6 +1,5 @@
 #include "Server.hpp"
 
-
 void Server::ServerCreateSocket()
 {
     struct sockaddr_in serverAddr;
@@ -34,5 +33,5 @@ void Server::ConfigureSocket(int _socketFd, struct sockaddr_in serverAddr)
         throw std::runtime_error("Error binding socket");
     if (listen(_socketFd, SOMAXCONN) < 0) // Listen for incoming connections
         throw std::runtime_error("Error listening on socket");
-    
+   
 }

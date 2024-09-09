@@ -25,7 +25,7 @@ void Server::CloseFds()
     {
         if (Clients[i].GetFd() != _socketFd)
         {
-            print(Clients[i].GetUsername() + " disconnected", RED);
+            print(Clients[i].GetNickname() + " disconnected", RED);
             close(Clients[i].GetFd());
         }
     }
