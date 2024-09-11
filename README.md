@@ -59,3 +59,14 @@ Bu projede implemente edilmesi gereken temel özellikler şunlardır:
 
    ```bash
    ./ircserv <port> <password>
+
+### Kullanım
+
+1. İstemci tarafında, herhangi bir IRC istemcisi kullanarak sunucunuza bağlanabilirsiniz. Örneğin:
+
+   ```bash
+   /connect 127.0.0.1 <port>
+
+2. Sunucuya bağlandıktan sonra, yukarıda bahsedilen komutları kullanarak kanallara katılabilir, mesajlaşabilir ve sunucu üzerinde farklı yönetimsel işlemler yapabilirsiniz.
+
+
