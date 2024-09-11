@@ -1,5 +1,7 @@
 # Internet Relay Chat
 
+## [TR]
+
 ## Proje Hakkında
 
 `ft_irc`, Ecole 42 tarafından verilen bir projedir ve öğrencilerin **IRC (Internet Relay Chat)** sunucusu oluşturmasını amaçlar. Bu proje sayesinde temel ağ programlama ve iletişim protokolleri hakkında derinlemesine bilgi sahibi olacak, çok kullanıcılı bir sohbet ortamını sıfırdan inşa edeceksiniz.
