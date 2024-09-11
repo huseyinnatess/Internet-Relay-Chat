@@ -16,6 +16,7 @@ void Server::ClientInvite(int fd, vector<string> commands)
         SendMessage(fd, ERR_NOSUCHCHANNEL(channels[0]));
         return;
     }
+
     if (CheckClient(commands[1]) == 0)
     {
         SendMessage(fd, ERR_NOSUCHNICK(commands[1]));

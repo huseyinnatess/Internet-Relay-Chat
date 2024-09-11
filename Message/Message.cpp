@@ -29,8 +29,8 @@ void Server::SendAllClientsMessage(vector<int> fds, string message)
 void Server::ShowChannelInformations(int fd, string channelName)
 {
     int index = GetCreatedChannelIndex(channelName);
-    string messages = "";
     Channel &channel = CreatedChannels[index];
+    string messages = "";
     vector<int> fds;
     for (size_t i = 0; i < channel.RegisteredUsersFd.size(); i++)
     {

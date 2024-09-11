@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
         signal(SIGINT, Server::SignalHandler); // catch the signal (ctrl + c)
         signal(SIGTSTP, Server::SignalHandler); // catch the signal (ctrl + z)
         signal(SIGQUIT, Server::SignalHandler); // catch the signal (ctrl + \)
-        server.ServerInit(std::atoi(argv[1]), argv[2]);
+        server.ServerInit(ConvertToInt(argv[1]), argv[2]);
     }
     catch (const std::exception& e)
     {

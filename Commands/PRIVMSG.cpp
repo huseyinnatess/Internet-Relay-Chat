@@ -55,6 +55,8 @@ void Server::ClientPrivmsg(int fd, vector<string> commands)
             return;
         }
         string message = commands[1];
+        if (message[0] == ':')
+            message.erase(message.begin());
         for (int i = 2; i < commands.size(); i++)
             message += " " + commands[i];
         message = ":" + GetClient(fd).GetNickname() + " PRIVMSG " + targetClient.GetNickname() + " " + message + "\r\n";

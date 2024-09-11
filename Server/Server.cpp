@@ -15,7 +15,6 @@ void Server::ServerInit(int port, string password)
 
 void Server::ServerLoop()
 {
-    static int i = 0;
     while (!Server::_signal)
     {
         if ((poll(&_pollFds[0], _pollFds.size(), -1)) == -1 && !Server::_signal) // Wait indefinitely for events
