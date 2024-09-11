@@ -44,3 +44,18 @@ Bu projede implemente edilmesi gereken temel özellikler şunlardır:
 
    ```bash
    git clone https://github.com/huseyinnatess/Ft_irc.git
+
+2. Proje dizinine gidin:
+
+   ```bash
+   cd Ft_irc
+
+3. Projeyi derleyin:
+
+   ```bash
+   make
+
+4. Sunucuyu başlatın:
+
+   ```bash
+   ./ircserv <port> <password>
