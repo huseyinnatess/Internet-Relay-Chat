@@ -43,4 +43,4 @@ Bu projede implemente edilmesi gereken temel özellikler şunlardır:
 1. Depoyu klonlayın:
 
    ```bash
-   git clone https://github.com/kullanici-adiniz/ft_irc.git
+   git clone https://github.com/huseyinnatess/Ft_irc.git
