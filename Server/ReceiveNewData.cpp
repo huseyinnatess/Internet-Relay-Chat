@@ -6,17 +6,26 @@ void SplitBuffer(string buffer, vector<string>& commandList);
 void Server::ReceiveNewData(int fd)
 {
     char buffer[1024];
-    string message;
+    string message = "";
     Client &client = GetClient(fd);
     vector<string> commandList;
 
     memset(buffer, 0, sizeof(buffer));
-    while (recv(fd, buffer, sizeof(buffer), 0) > 0)
+    int bytesReceived = 0;
+
+    while ((bytesReceived = recv(fd, buffer, sizeof(buffer), 0)) > 0)
     {
         message += buffer;
     }
+
+    if (bytesReceived == 0) // Ctrl + d
+    {
+        ClientQuit(fd);
+        return;
+    }
+
     client.SetBuffer(message);
-    if (client.GetBuffer().find_first_of("\r\n") == string::npos) //if command is not
+    if (client.GetBuffer().find_first_of("\r\n") == string::npos) // End of line
          return;
 
     SplitBuffer(message, commandList);
@@ -24,6 +33,7 @@ void Server::ReceiveNewData(int fd)
     for (size_t i = 0; i < commandList.size(); i++)
     {
         ParseClientCommands(fd, commandList[i]);
+        break;
     }
     if (client.GetBuffer() != "")
     {

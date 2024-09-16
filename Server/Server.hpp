@@ -35,8 +35,8 @@ class Server
 {
 public:
     Server(){_socketFd = -1;}
-    Server(const Server& server);
-    Server& operator=(const Server& server);
+    Server(Server const& server);
+    Server& operator=(Server const& server);
 
     void ServerInit(int port, string password);
     void ServerCreateSocket();

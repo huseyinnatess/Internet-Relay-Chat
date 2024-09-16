@@ -11,6 +11,8 @@ Channel::Channel()
     _inviteOnly = false;
     _userCount = 0;
     _userLimit = 0;
+    _operator = "";
+    _isPasswordProtected = false;
 }
 
 Channel::Channel(string channelName, string key)
@@ -31,52 +33,30 @@ Channel::Channel(string channelName, string key)
     _inviteOnly = false;
     _userCount = 0;
     _userLimit = 0;
+    _isPasswordProtected = false;
+    _operator = "";
 }
 
-Channel::Channel(const Channel &channel)
+Channel::Channel(Channel const& channel)
 {
-    if (this == &channel)
-        return;
-    _channelName = channel._channelName;
-    _topic = channel._topic;
-    _mode = channel._mode;
-    _key = channel._key;
-    _operator = channel._operator;
-    _isPasswordProtected = channel._isPasswordProtected;
-    _inviteOnly = channel._inviteOnly;
-    _userCount = channel._userCount;
-    _userLimit = channel._userLimit;
-    RegisteredUsersFd = channel.RegisteredUsersFd;
-
+    if (this != &channel)
+        *this = channel;
 }
 
-Channel &Channel::operator=(const Channel &channel)
-
+Channel &Channel::operator=(Channel const& channel)
 {
-    if (this == &channel)
-        return *this;
-    _channelName = channel._channelName;
-    _topic = channel._topic;
-    _mode = channel._mode;
-    _key = channel._key;
-    _isPasswordProtected = channel._isPasswordProtected;
-    _inviteOnly = channel._inviteOnly;
-    _userCount = channel._userCount;
-    _userLimit = channel._userLimit;
+    if (this != &channel)
+    {
+        _channelName = channel._channelName;
+        _topic = channel._topic;
+        _mode = channel._mode;
+        _key = channel._key;
+        _operator = channel._operator;
+        _isPasswordProtected = channel._isPasswordProtected;
+        _inviteOnly = channel._inviteOnly;
+        _userCount = channel._userCount;
+        _userLimit = channel._userLimit;
+        RegisteredUsersFd = channel.RegisteredUsersFd;
+    }
     return *this;
 }
-
-Channel &Channel::operator==(const Channel &channel)
-{
-    if (this == &channel)
-        return *this;
-    _channelName = channel._channelName;
-    _topic = channel._topic;
-    _mode = channel._mode;
-    _key = channel._key;
-    _isPasswordProtected = channel._isPasswordProtected;
-    _inviteOnly = channel._inviteOnly;
-    _userCount = channel._userCount;
-    _userLimit = channel._userLimit;
-    return *this;
-}  

@@ -10,7 +10,6 @@ class Client
 {
 public:
     Client();
-    Client(string nickname, string username, int fd);
     Client(Client const &client);
     Client &operator=(Client const &client);
 
@@ -60,10 +59,6 @@ private:
     string _clientColor;
     string _buffer;
     string _invitedChannel;
-
-    /* ----------------- Other Functions ----------------- */
-    void CopyFrom(Client const &client);
-    /* ----------------------------------------------------- */
 };
 
 #endif

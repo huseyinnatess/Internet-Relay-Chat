@@ -13,9 +13,8 @@ public:
     /* ----------------- Initialize ----------------- */
     Channel();
     Channel(string channelName, string key);
-    Channel(const Channel &channel);
-    Channel &operator=(const Channel &channel);
-    Channel &operator==(const Channel &channel);
+    Channel(Channel const& channel);
+    Channel &operator=(Channel const& channel);
 
     /* ----------------- Setter Functions ----------------- */
     void SetChannelName(string channelName);

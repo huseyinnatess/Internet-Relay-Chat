@@ -2,8 +2,8 @@
 
 int main(int argc, char *argv[])
 {
-    argv[2] = "password";
     argv[1] = "8888";
+    argv[2] = "password";
     argc = 3;
     if (argc != 3 || !CheckPort(std::atoi(argv[1])) || !CheckPassword(argv[2]))
     {

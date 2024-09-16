@@ -23,19 +23,24 @@ string ConvertToString(const int variable)
 
     int temp = variable;
 
-    try
+   try
     {
         if (temp < 0)
         {
-        result = "-";
-        temp = -temp;
+            temp = -temp;
         }
 
-        do {
+        do 
+        {
             char digit = '0' + temp % 10;
             result = digit + result;
             temp /= 10;
         } while (temp != 0);
+
+        if (variable < 0)
+        {
+            result = '-' + result;
+        }
     }
     catch (...)
     {

@@ -50,3 +50,27 @@ void Server::InitializeCommandMap()
     _commandsMap["PRIVMSG"] = PRIVMSG;
     _commandsMap["INVITE"] = INVITE;
 }
+
+Server::Server(Server const& oth)
+{
+    if (this != &oth)
+    {
+        *this = oth;
+    }
+}
+
+Server& Server::operator=(Server const& oth)
+{
+    if (this != &oth)
+    {
+        _port = oth._port;
+        _socketFd = oth._socketFd;
+        _signal = oth._signal;
+        _pollFds = oth._pollFds;
+        _password = oth._password;
+        _commandsMap = oth._commandsMap;
+        Clients = oth.Clients;
+        CreatedChannels = oth.CreatedChannels;
+    }
+    return *this;
+}
