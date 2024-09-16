@@ -131,6 +131,7 @@ void Server::CreateAndJoinChannel(int fd, string channelName, string key)
     if (key != "" && key != "JOIN")
     {
         newChannel.SetIsPasswordProtected(true);
+        newChannel.SetKey(key);
         print(client.GetNickname() + " create and joined channel: " + channelName + " with key: " + key);
     }
     else
