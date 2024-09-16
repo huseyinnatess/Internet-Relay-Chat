@@ -10,7 +10,7 @@ void Server::ReceiveNewData(int fd)
     Client &client = GetClient(fd);
     vector<string> commandList;
 
-    memset(buffer, 0, sizeof(buffer));
+    memset(buffer, 0, sizeof(buffer)); 
     int bytesReceived = 0;
 
     while ((bytesReceived = recv(fd, buffer, sizeof(buffer), 0)) > 0)
