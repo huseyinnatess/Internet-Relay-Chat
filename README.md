@@ -12,7 +12,7 @@ IRC, metin tabanlı bir iletişim protokolüdür ve gerçek zamanlı grup sohbet
 
 - **Dil**: C++98
 - **Protokol**: IRC RFC 1459 standardı baz alınmıştır.
-- **Ağ**: TCP/IP kullanarak bir sunucu istemci ilişkisi oluşturulmalıdır.
+- **Ağ**: TCP/IP kullanarak bir sunucu istemci ilişkisi oluşturulmalıdır.  
 - **Bağımlılıklar**: Standart kütüphanelerin dışında herhangi bir ek kütüphane kullanımı yasaktır.
 
 ## Özellikler  
