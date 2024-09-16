@@ -25,7 +25,7 @@ Bu projede implemente edilmesi gereken temel özellikler şunlardır:
   - `USER`: Kullanıcı bilgilerini gönderme.
 
 - **Kanal Yönetimi**:
-  - `JOIN`: Kanal katılımı.
+  - `JOIN`: Kanal katılımı. 
   - `PART`: Kanaldan ayrılma.
   - `KICK`: Kullanıcıyı kanaldan atma.
   - `TOPIC`: Kanal konusunu belirleme/değiştirme.
