@@ -15,7 +15,7 @@ IRC, metin tabanlı bir iletişim protokolüdür ve gerçek zamanlı grup sohbet
 - **Ağ**: TCP/IP kullanarak bir sunucu istemci ilişkisi oluşturulmalıdır.
 - **Bağımlılıklar**: Standart kütüphanelerin dışında herhangi bir ek kütüphane kullanımı yasaktır.
 
-## Özellikler
+## Özellikler  
 
 Bu projede implemente edilmesi gereken temel özellikler şunlardır:
 
