@@ -33,7 +33,6 @@ void Server::ReceiveNewData(int fd)
     for (size_t i = 0; i < commandList.size(); i++)
     {
         ParseClientCommands(fd, commandList[i]);
-        break;
     }
     if (client.GetBuffer() != "")
     {
