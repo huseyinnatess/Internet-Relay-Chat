@@ -49,6 +49,7 @@ void Server::InitializeCommandMap()
     _commandsMap["PART"] = PART;
     _commandsMap["PRIVMSG"] = PRIVMSG;
     _commandsMap["INVITE"] = INVITE;
+    _commandsMap["NOTICE"] = NOTICE;
 }
 
 Server::Server(Server const& oth)

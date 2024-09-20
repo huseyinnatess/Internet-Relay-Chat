@@ -51,6 +51,9 @@ void Server::RouterCommands(int fd, int commandIndex, vector<string> command)
         case PRIVMSG:
             ClientPrivmsg(fd, command);
             break;
+        case NOTICE:
+            ClientNotice(fd, command);
+            break;
     }
 }
 

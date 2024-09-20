@@ -55,6 +55,8 @@
 #define RPL_PRIVMSG(source, target, message)		    ":" + source + " PRIVMSG " + target + " :" + message + "\r\n"
 #define ERR_CANNOTSENDTOSELF()                          ": 400 :Cannot send to self\r\n"
 
+#define RPL_NOTICE(source, target, message)             ":" + source + " NOTICE " + target + " :" + message + "\r\n"
+
 #include "../Server/Server.hpp"
 
 

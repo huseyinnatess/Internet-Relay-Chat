@@ -28,7 +28,8 @@ enum Commands
     MODE,
     PART,
     PRIVMSG,
-    INVITE
+    INVITE,
+    NOTICE
 };
 
 class Server
@@ -89,6 +90,7 @@ private:
     void ClientInvite(int fd, vector<string> commands); // INVITE
     void ClientKick(int fd, vector<string> commands); // KICK
     void ClientPrivmsg(int fd, vector<string> commands); // PRIVMSG
+    void ClientNotice(int fd, vector<string> commands); // NOTICE
 
     /* ----------------- Check Functions ----------------- */
     bool CheckIsUsing(string value, string checkValue);

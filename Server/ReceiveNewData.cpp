@@ -25,9 +25,6 @@ void Server::ReceiveNewData(int fd)
             return;
         }
     }
-    print(message, GREEN);
-
-  
 
     client.SetBuffer(message);
     if (client.GetBuffer().find_first_of("\r\n") == string::npos) // End of line

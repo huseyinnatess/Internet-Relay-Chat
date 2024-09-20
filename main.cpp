@@ -33,6 +33,3 @@ int main(int argc, char *argv[])
     print("------- The Server Closed ----", YELLOW);
     return 0;
 }
-
-
-
