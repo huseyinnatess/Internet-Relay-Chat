@@ -25,7 +25,7 @@ void SplitChannelKeys(string channelKeys, vector<string>& keys)
 
 void Server::ClientJoin(int fd, vector<string> channelNames)
 {
-    if (channelNames.size() < 1)
+    if (channelNames.size() <= 1)
     {
         SendError(fd, ERR_NEEDMOREPARAMS(channelNames[0]));
         return;
@@ -41,6 +41,7 @@ void Server::ClientJoin(int fd, vector<string> channelNames)
 
     string channelName = channels[0];
     string key = "";
+   
     if ((channelName[0] != '#' && channelName[0] != '&') || channelName.size() == 1)
     {
         SendError(fd, ERR_INVCHANNAME);

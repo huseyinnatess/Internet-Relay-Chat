@@ -23,13 +23,9 @@ void Server::ClientPart(int fd, vector<string> channelNames)
     }
     if (CheckChannelIsCreated(channelName))
     {
-        int index = GetCreatedChannelIndex(channelName);
-        Client &client = GetClient(fd);
-        Channel &channel = CreatedChannels[index];
-        
         RemoveChannelFromClient(fd, channelName);
     }
-    else
+    else   
     {
         SendError(fd, ERR_NOSUCHCHANNEL(channelName));
     }

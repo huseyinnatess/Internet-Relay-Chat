@@ -12,6 +12,7 @@ vector<string> SplitCommand(string command) // Split the command
         commandList.push_back(token);
         token.clear();
     }
+    
     return commandList;
 }
 
@@ -55,8 +56,6 @@ void Server::RouterCommands(int fd, int commandIndex, vector<string> command)
 
 void Server::RouterLoginCommands(int fd, int commandIndex, vector<string> command)
 {
-    Client &client = GetClient(fd);
-
     switch (commandIndex)
     {
         case CAP:
@@ -75,11 +74,11 @@ void Server::RouterLoginCommands(int fd, int commandIndex, vector<string> comman
             ClientQuit(fd);
             break;
         default:
-            if (!client.GetRegistered() || client.GetNickname() == "Client" || client.GetUsername() == "Client")
-            {
-                SendError(fd, ERR_NOTREGISTERED(client.GetNickname()));
-            }
-            else
+            // if (!client.GetRegistered() || client.GetNickname() == "Client" || client.GetUsername() == "Client")
+            // {
+            //     SendError(fd, ERR_NOTREGISTERED(client.GetNickname()));
+            // }
+            // else
             RouterCommands(fd, commandIndex, command);
         break;
     }

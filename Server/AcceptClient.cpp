@@ -38,7 +38,7 @@ void Server::AcceptNewClient()
 void SetClientRandomColor(Client &client)
 {
     string clientColor = "\033[";
-    clientColor += ConvertToString(31 + rand() % 7);
+    clientColor += ConvertToString(31 + client.GetFd() % 6);
     clientColor += "m";
     client.SetClientColor(clientColor);
 }

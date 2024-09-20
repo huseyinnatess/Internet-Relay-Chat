@@ -46,7 +46,7 @@ OBJDIR = Output
 OBJ = $(SRC:%.cpp=$(OBJDIR)/%.o)
 
 CPP = c++
-FLAGS = -std=c++98
+FLAGS = -Wall -Wextra -Werror -std=c++98
 
 $(OBJDIR)/%.o : %.cpp
 	@mkdir -p $(dir $@)

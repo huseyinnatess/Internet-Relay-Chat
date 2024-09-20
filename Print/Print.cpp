@@ -19,7 +19,7 @@ void write(string message, string colorCode = DEFAULT)
 /* ------------- CONVERT STRING FUNCTIONS ------------- */
 string ConvertToString(const int variable)
 {
-    string result;    
+    string result;
 
     int temp = variable;
 

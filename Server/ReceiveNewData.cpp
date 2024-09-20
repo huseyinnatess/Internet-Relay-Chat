@@ -6,23 +6,28 @@ void SplitBuffer(string buffer, vector<string>& commandList);
 void Server::ReceiveNewData(int fd)
 {
     char buffer[1024];
-    string message = "";
     Client &client = GetClient(fd);
+    string message = client.GetBuffer();
     vector<string> commandList;
-
-    memset(buffer, 0, sizeof(buffer)); 
+    memset(buffer, 0, sizeof(buffer));
     int bytesReceived = 0;
 
-    while ((bytesReceived = recv(fd, buffer, sizeof(buffer), 0)) > 0)
+    while (message.find_first_of("\r\n") == string::npos && !Server::_signal)
     {
-        message += buffer;
+        memset(buffer, 0, sizeof(buffer));
+        while ((bytesReceived = recv(fd, buffer, sizeof(buffer), 0)) > 0)
+        {
+            message += buffer;
+        }
+        if (bytesReceived == 0) // Ctrl + d
+        {
+            ClientQuit(fd);
+            return;
+        }
     }
+    print(message, GREEN);
 
-    if (bytesReceived == 0) // Ctrl + d
-    {
-        ClientQuit(fd);
-        return;
-    }
+  
 
     client.SetBuffer(message);
     if (client.GetBuffer().find_first_of("\r\n") == string::npos) // End of line
@@ -50,6 +55,7 @@ void SplitBuffer(string buffer, vector<string>& commandList)
         size_t pos = token.find_first_of("\r\n");
         if (pos != string::npos)
             token = token.substr(0, pos);
-        commandList.push_back(token);
+       commandList.push_back(token);
     }
+
 }

@@ -96,7 +96,7 @@ private:
     int  CheckClient(string nickName);
     
     /* ----------------- Error Functions ----------------- */
-    void SendError(int fd, string errorMesssage, int clientCloseFlag = 0);
+    void SendError(int fd, string errorMesssage);
 
     /* ----------------- Message Functions ----------------- */
     void SendMessage(int fd, string message);

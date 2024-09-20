@@ -39,6 +39,14 @@ void Client::SetNickname(string nickname)
         _nickname = nickname.substr(0, 9);
     else
         _nickname = nickname;
+
+    if (_connectionType != HEXCHAT)
+    {
+        string temp = GetClientColor();
+
+        temp += _nickname;
+        _nickname = temp + "\033[0m";
+    }
 }
 
 void Client::SetOldNickname(string oldNickname)

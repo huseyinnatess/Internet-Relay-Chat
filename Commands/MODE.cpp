@@ -14,7 +14,7 @@ void Server::ModeOperator(int fd, Channel &channel, string clientName)
     SendError(fd, "Client not found\r\n");
 }
 
-void ModePassword(int fd, Channel &channel, string password)
+void ModePassword(Channel &channel, string password)
 {
     if (password == "")
     {
@@ -24,7 +24,7 @@ void ModePassword(int fd, Channel &channel, string password)
     channel.SetIsPasswordProtected(true);
 }
 
-void ModeChannelLimit(int fd, Channel &channel, string limit)
+void ModeChannelLimit(Channel &channel, string limit)
 {
     int userLimit = ConvertToInt(limit);
 
@@ -70,7 +70,7 @@ void Server::ClientMode(int fd, vector<string> commands)
     }
     if (commands[1] == "+k")
     {
-        ModePassword(fd, channel, commands[3]);
+        ModePassword(channel, commands[3]);
         return;
     }
     if (commands[1] == "-k")
@@ -81,7 +81,7 @@ void Server::ClientMode(int fd, vector<string> commands)
     }
     if (commands[1] == "+l")
     {
-        ModeChannelLimit(fd, channel, commands[2]);
+        ModeChannelLimit(channel, commands[2]);
         return;
     }
     if (commands[1] == "+i")

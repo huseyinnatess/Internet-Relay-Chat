@@ -24,14 +24,14 @@ void Server::ClientPrivmsg(int fd, vector<string> commands)
             return;
         }
         string message = commands[1];
-        for (int i = 2; i < commands.size(); i++)
+        for (size_t i = 2; i < commands.size(); i++)
             message += " " + commands[i];
         message = ":" + GetClient(fd).GetNickname() + " PRIVMSG " + channel.GetChannelName() + " " + message + "\r\n";
 
         if (GetClient(fd).GetConnectionType() == HEXCHAT)
         {
             vector<int> Tempfds;
-            for (int i = 0; i < channel.RegisteredUsersFd.size(); i++)
+            for (size_t i = 0; i < channel.RegisteredUsersFd.size(); i++)
             {
                 if (channel.RegisteredUsersFd[i] != fd)
                     Tempfds.push_back(channel.RegisteredUsersFd[i]);
@@ -57,7 +57,7 @@ void Server::ClientPrivmsg(int fd, vector<string> commands)
         string message = commands[1];
         if (message[0] == ':')
             message.erase(message.begin());
-        for (int i = 2; i < commands.size(); i++)
+        for (size_t i = 2; i < commands.size(); i++)
             message += " " + commands[i];
         message = ":" + GetClient(fd).GetNickname() + " PRIVMSG " + targetClient.GetNickname() + " " + message + "\r\n";
         SendMessage(targetClient.GetFd(), message);

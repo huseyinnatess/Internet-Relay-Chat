@@ -73,7 +73,6 @@ bool CheckChannelName(string channelName)
 
 int Server::CheckClientRegistered(int fd, string channelName)
 {
-    Client &client = GetClient(fd);
     int index = GetCreatedChannelIndex(channelName);
     if (index == -1)
     {
