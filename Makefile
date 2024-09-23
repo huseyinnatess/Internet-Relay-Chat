@@ -7,6 +7,8 @@ COMMANDS = ./Commands
 CHANNEL = ./Channel
 MESSAGE = ./MESSAGE
 CHECK = ./Check
+CPP = c++
+FLAGS = -Wall -Wextra -Werror -std=c++98
 
 SRC =	SERVER/Server.cpp \
 		SERVER/AcceptClient.cpp \
@@ -46,8 +48,6 @@ OBJDIR = Output
 
 OBJ = $(SRC:%.cpp=$(OBJDIR)/%.o)
 
-CPP = c++
-FLAGS = -std=c++98
 
 $(OBJDIR)/%.o : %.cpp
 	@mkdir -p $(dir $@)

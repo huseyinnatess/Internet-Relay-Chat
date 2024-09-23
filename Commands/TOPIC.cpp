@@ -1,27 +1,27 @@
 #include "../Server/Server.hpp"
 
-string ParseTopic(vector<string> channelNames)
+string ParseTopic(vector<string> commands)
 {
     string topic = "";
-    if (channelNames[1][0] == ':')
+    if (commands[1][0] == ':')
     {
-        for (size_t i = 1; i < channelNames.size(); i++)
+        for (size_t i = 1; i < commands.size(); i++)
         {
-            topic += channelNames[i] + " ";
+            topic += commands[i] + " ";
         }
     }
     return topic;
 }
 
-void Server::ClientTopic(int fd, vector<string> channelNames)
+void Server::ClientTopic(int fd, vector<string> commands)
 {
-    if (channelNames.size() < 2)
+    if (commands.size() < 2)
     {
-        SendError(fd, ERR_NEEDMOREPARAMS(channelNames[0]));
+        SendError(fd, ERR_NEEDMOREPARAMS(commands[0]));
         return;
     }
-    channelNames.erase(channelNames.begin()); // Removed TOPIC command
-    vector<string> channels = SplitChannelNames(channelNames);
+    commands.erase(commands.begin());
+    vector<string> channels = SplitChannelNames(commands);
 
     int index = GetCreatedChannelIndex(channels[0]);
     if (index == -1)
@@ -31,31 +31,28 @@ void Server::ClientTopic(int fd, vector<string> channelNames)
     }
     Channel &channel = CreatedChannels[index];
     Client &client = GetClient(fd);
-    if (channelNames.size () < 2)
+    if (commands.size () < 2)
     {
         SendError(fd, RPL_TOPIC(client.GetNickname(), client.GetIpAddress(), channel.GetChannelName(), channel.GetTopic()));
         return;
     }
-
-    string topic = ParseTopic(channelNames);
+    if (channel.GetOperator() != client.GetNickname())
+    {
+        SendError(fd, ERR_CHANOPRIVSNEEDED(channel.GetChannelName()));
+        return;
+    }
+    string topic = ParseTopic(commands);
 
     if (topic == "")
     {
-        SendError(fd, RPL_NOTOPIC(client.GetNickname(), channelNames[0]));
+        SendError(fd, RPL_NOTOPIC(client.GetNickname(), commands[0]));
         return;
     }
     else
     {
-        if (channel.GetOperator() == client.GetNickname())
-        {
-            if (topic[0] == ':')
-                topic.substr(1, topic.size() - 1);
-            channel.SetTopic(topic);
-            SendAllClientsMessage(channel.RegisteredUsersFd, RPL_TOPIC(client.GetNickname(), client.GetIpAddress(), channel.GetChannelName(), channel.GetTopic()));
-        }
-        else
-        {
-            SendError(fd, ERR_CHANOPRIVSNEEDED(channel.GetChannelName()));
-        }
+        if (topic[0] == ':')
+            topic.substr(1, topic.size() - 1);
+        channel.SetTopic(topic);
+        SendAllClientsMessage(channel.RegisteredUsersFd, RPL_TOPIC(client.GetNickname(), client.GetIpAddress(), channel.GetChannelName(), channel.GetTopic()));
     }
 }

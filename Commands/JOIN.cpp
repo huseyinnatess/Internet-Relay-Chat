@@ -31,7 +31,7 @@ void Server::ClientJoin(int fd, vector<string> channelNames)
         return;
     }
 
-    channelNames.erase(channelNames.begin()); // Removed JOIN command
+    channelNames.erase(channelNames.begin());
     vector<string> keys;
     if (channelNames[1] != "")
     {
@@ -81,7 +81,6 @@ void Server::ClientJoin(int fd, vector<string> channelNames)
             else
             {
                 SendError(fd, ERR_BADCHANNELKEY(channelName));
-                print("Channel key is not valid\n");
                 return;
             }
         }

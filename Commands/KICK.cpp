@@ -25,9 +25,28 @@ void Server::ClientKick(int fd, vector<string> commands)
         SendError(fd, ERR_NOSUCHNICK(commands[1]));
         return;
     }
-    Client &client = GetClient(fd);
-    Client &targetClient = GetClient(commands[1]);
+
     Channel &channel = CreatedChannels[GetCreatedChannelIndex(channelName[0])];
+
+    int clientRegisterFlag = 0;
+    Client &targetClient = GetClient(commands[1]);
+    int targetFd = targetClient.GetFd();
+
+    for (size_t i = 0; i < channel.RegisteredUsersFd.size(); i++)
+    {
+        if (targetFd == channel.RegisteredUsersFd[i])
+        {
+            clientRegisterFlag = 1;
+            break;
+        }
+    }
+    if (clientRegisterFlag == 0)
+    {
+        SendError(fd, ERR_NOCHANNELREGISTER(channel.GetChannelName(), commands[1]));
+        return;
+    }
+
+    Client &client = GetClient(fd);
     
     if (client.GetNickname() != channel.GetOperator())
     {

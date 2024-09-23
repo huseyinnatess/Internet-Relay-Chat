@@ -9,7 +9,7 @@ void Server::ClientPrivmsg(int fd, vector<string> commands)
     }
     commands.erase(commands.begin());
 
-    if (commands[0][0] == '#')
+    if (commands[0][0] == '#' || commands[0][0] == '&')
     {
         if (CheckChannelIsCreated(commands[0]) == 0)
         {

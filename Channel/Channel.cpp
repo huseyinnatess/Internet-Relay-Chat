@@ -12,10 +12,9 @@ Channel::Channel()
     _userCount = 0;
     _userLimit = 0;
     _operator = "";
-    _isPasswordProtected = false;
 }
 
-Channel::Channel(string channelName, string key)
+Channel::Channel(string const channelName, string const key)
 {
     if (key.empty())
     {
@@ -33,16 +32,8 @@ Channel::Channel(string channelName, string key)
     _inviteOnly = false;
     _userCount = 0;
     _userLimit = 0;
-    _isPasswordProtected = false;
     _operator = "";
 }
-
-Channel::Channel(Channel const& channel)
-{
-    if (this != &channel)
-        *this = channel;
-}
-
 Channel &Channel::operator=(Channel const& channel)
 {
     if (this != &channel)
@@ -59,4 +50,10 @@ Channel &Channel::operator=(Channel const& channel)
         RegisteredUsersFd = channel.RegisteredUsersFd;
     }
     return *this;
+}
+
+Channel::Channel(Channel const& channel)
+{
+    if (this != &channel)
+        *this = channel;
 }

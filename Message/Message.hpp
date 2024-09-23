@@ -12,7 +12,7 @@
 /* -------------------- USER ERROR MESSAGES -------------------- */
 #define ERR_ALREADYREGISTRED                            ": 462 :You may not reregister\r\n"
 #define ERR_CANNOTCHANGEUSERNAME(nick)                   ": 503 " + nick + " :You may not change your username\r\n"
-
+#define ERR_NONICKNAME                                     " Nickname should be entered firstly \r\n"
 /* -------------------- NICK ERROR MESSAGES -------------------- */
 #define ERR_ERRONEUSNICKNAME(nick)			            ": 432 " + nick + " :Erroneus nickname" + "\r\n"                      //NICK
 #define ERR_NICKNAMEINUSE(nick)				            ": 433 " + nick + " :Nickname is already in use" + "\r\n"              //NICK
@@ -41,7 +41,8 @@
 #define ERR_CHANOPRIVSNEEDED(channelName)               ": 482 " + channelName + " :You're not channel operator\r\n"
 
 /* -------------------- MODE ERROR MESSAGES -------------------- */
-#define ERR_UNKNOWNMODE(source, channel, mode)		": 472 " + source + " " +  channel + " :Unknown Mode " + mode + "\r\n"
+#define ERR_UNKNOWNMODE(source, channel, mode)		    ": 472 " + source + " " +  channel + " :Unknown Mode " + mode + "\r\n"
+#define ERR_NOCHANNELREGISTER(channelName, targetClient) targetClient + " is not registered in the channel " + channelName  + "\r\n"
 
 /* -------------------- INVITE ERROR MESSAGES -------------------- */
 #define RPL_INVITE(nick, ip, channel, target)           ":" + nick + "!" + nick + "@" + ip + " INVITE " + target + " " + channel + "\r\n"
@@ -55,7 +56,10 @@
 #define RPL_PRIVMSG(source, target, message)		    ":" + source + " PRIVMSG " + target + " :" + message + "\r\n"
 #define ERR_CANNOTSENDTOSELF()                          ": 400 :Cannot send to self\r\n"
 
+/* -------------------- TOPIC ERROR MESSAGES -------------------- */
 #define RPL_NOTICE(source, target, message)             ":" + source + " NOTICE " + target + " :" + message + "\r\n"
+
+
 
 #include "../Server/Server.hpp"
 

@@ -2,34 +2,45 @@
 
 void Server::ModeOperator(int fd, Channel &channel, string clientName)
 {
-    for (size_t i = 0; i < Clients.size(); i++)
+    int clientRegisterFlag = 0;
+    int targetFd = GetClient(clientName).GetFd();
+
+    for (size_t i = 0; i < channel.RegisteredUsersFd.size(); i++)
     {
-        if (Clients[i].GetNickname() == clientName)
+        if (targetFd == channel.RegisteredUsersFd[i])
         {
-            print("Client: " + GetClient(fd).GetNickname() + " is operator in channel: " + channel.GetChannelName());
-            channel.SetOperator(Clients[i].GetNickname());
-            return;
+            clientRegisterFlag = 1;
+            break;
         }
     }
-    SendError(fd, "Client not found\r\n");
+    if (clientRegisterFlag == 0)
+    {
+        SendError(fd, ERR_NOCHANNELREGISTER(channel.GetChannelName(), clientName));
+        return;
+    }
+
+    channel.SetOperator(clientName);
+    ShowChannelInformations(fd, channel.GetChannelName());
 }
 
-void ModePassword(Channel &channel, string password)
+void Server::ModePassword(int fd, Channel &channel, string password)
 {
     if (password == "")
     {
+        SendError(fd, "Password is not set\r\n");
         return;
     }
     channel.SetKey(password);
     channel.SetIsPasswordProtected(true);
 }
 
-void ModeChannelLimit(Channel &channel, string limit)
+void Server::ModeChannelLimit(int fd, Channel &channel, string limit)
 {
     int userLimit = ConvertToInt(limit);
 
-    if (userLimit <= 0 || userLimit > 50 || channel.GetUserCount() > userLimit)
+    if (userLimit <= 0 || userLimit > 200 || channel.GetUserCount() > userLimit)
     {
+        SendError(fd, "Limit is not changed\r\n");
         return;
     }
     channel.SetUserLimit(userLimit);
@@ -64,13 +75,17 @@ void Server::ClientMode(int fd, vector<string> commands)
 
     if (commands[1] == "+o")
     {
+        if (!CheckClient(commands[2]))
+        {
+            SendError(fd, "Client not found\r\n");
+            return;
+        }
         ModeOperator(fd, channel, commands[2]);
-        ShowChannelInformations(fd, channel.GetChannelName());
         return;
     }
     if (commands[1] == "+k")
     {
-        ModePassword(channel, commands[3]);
+        ModePassword(fd, channel, commands[3]);
         return;
     }
     if (commands[1] == "-k")
@@ -81,19 +96,19 @@ void Server::ClientMode(int fd, vector<string> commands)
     }
     if (commands[1] == "+l")
     {
-        ModeChannelLimit(channel, commands[2]);
+        ModeChannelLimit(fd, channel, commands[2]);
         return;
     }
     if (commands[1] == "+i")
     {
         channel.SetInviteOnly(true);
-        SendMessage(fd, "Invite only channel: " + channel.GetChannelName());
+        SendMessage(fd, "Invite only channel: " + channel.GetChannelName() + "\r\n");
         return;
     }
     if (commands[1] == "-i")
     {
         channel.SetInviteOnly(false);
-        SendMessage(fd, "Channel is not invite only: " + channel.GetChannelName());
+        SendMessage(fd, "Channel is not invite only: " + channel.GetChannelName() + "\r\n");
         return;
     }
     SendError(fd, ERR_UNKNOWNMODE(client.GetNickname(), channel.GetChannelName(), commands[1]));

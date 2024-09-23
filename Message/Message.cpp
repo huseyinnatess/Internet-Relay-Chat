@@ -10,7 +10,7 @@ void Server::SendError(int fd, string errorMesssage)
 void Server::SendMessage(int fd, string message)
 {
     if (send(fd, message.c_str(), message.size(), 0) == -1)
-        std::cerr << "Error: send() failed" << std::endl;
+        std::cout << "Error: send() failed" << std::endl;
 }
 
 void Server::SendAllClientsMessage(vector<int> fds, string message)
@@ -18,7 +18,7 @@ void Server::SendAllClientsMessage(vector<int> fds, string message)
     for (size_t i = 0; i < fds.size(); i++)
     {
         if (send(fds[i], message.c_str(), message.size(), 0) == -1)
-            std::cerr << "Error: send() failed" << std::endl;
+            std::cout << "Error: send() failed" << std::endl;
     }
 }
 

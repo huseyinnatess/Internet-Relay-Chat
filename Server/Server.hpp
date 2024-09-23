@@ -93,7 +93,7 @@ private:
     void ClientNotice(int fd, vector<string> commands); // NOTICE
 
     /* ----------------- Check Functions ----------------- */
-    bool CheckIsUsing(string value, string checkValue);
+    bool CheckIsUsing(string value);
     int  CheckClientRegistered(int fd, string channelName);
     int  CheckClient(string nickName);
     
@@ -112,6 +112,8 @@ private:
     void CreateAndJoinChannel(int fd, string channelName, string key);
     vector<string> SplitChannelNames(vector<string> channelNames);
     void ModeOperator(int fd, Channel &channel, string clientName);
+    void ModePassword(int fd, Channel &channel, string password);
+    void ModeChannelLimit(int fd, Channel &channel, string limit);
 
     /* ----------------- Remove Functions ----------------- */
     void RemoveChannel(int fd, int channelIndex, string clientNickname);

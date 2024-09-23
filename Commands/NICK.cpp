@@ -20,7 +20,7 @@ void Server::ClientNick(int fd, vector<string> command)
         SendError(fd, ERR_ERRONEUSNICKNAME(client.GetNickname()));
         return;
     }
-    if (CheckIsUsing(command[1], "nickname"))
+    if (CheckIsUsing(command[1]))
     {
         SendError(fd, ERR_NICKNAMEINUSE(client.GetNickname()));
         return;

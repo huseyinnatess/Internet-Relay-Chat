@@ -12,7 +12,7 @@ class Channel
 public:
     /* ----------------- Initialize ----------------- */
     Channel();
-    Channel(string channelName, string key);
+    Channel(string const channelName, string const key);
     Channel(Channel const& channel);
     Channel &operator=(Channel const& channel);
 
@@ -49,7 +49,6 @@ private:
     int _userLimit;
     bool _isPasswordProtected;
     bool _inviteOnly;
-
 };
 
 #endif

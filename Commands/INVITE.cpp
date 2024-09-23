@@ -19,7 +19,7 @@ void Server::ClientInvite(int fd, vector<string> commands)
 
     if (CheckClient(commands[1]) == 0)
     {
-        SendMessage(fd, ERR_NOSUCHNICK(commands[1]));
+        SendError(fd, ERR_NOSUCHNICK(commands[1]));
         return;
     }
 
